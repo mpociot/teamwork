@@ -17,7 +17,7 @@ return [
     | the team if it is in a different namespace.
     |
     */
-    'team' => 'App\Team',
+    'team_model' => Teamwork\Team::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,6 +45,27 @@ return [
     | User Foreign key on Teamwork's team_user Table (Pivot)
     |--------------------------------------------------------------------------
     */
-    'user_foreign_key' => 'id'
+    'user_foreign_key' => 'id',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Teamwork Team Invite Model
+    |--------------------------------------------------------------------------
+    |
+    | This is the Team Invite model used by Teamwork to create correct relations.
+    | Update the team if it is in a different namespace.
+    |
+    */
+    'invite_model' => Teamwork\TeamInvite::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Teamwork team invites Table
+    |--------------------------------------------------------------------------
+    |
+    | This is the team invites table name used by Teamwork to save sent/pending
+    | invitation into teams to the database.
+    |
+    */
+    'team_invites_table' => 'team_invites',
 ];

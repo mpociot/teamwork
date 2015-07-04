@@ -1,7 +1,7 @@
 <?php namespace Teamwork\Traits;
 
 /**
- * This file is part of Entrust
+ * This file is part of Teamwork
  *
  * @license MIT
  * @package Teamwork
@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Config;
 
 trait TeamworkTeamTrait
 {
+
+    /**
+     * One-to-Many relation with the invite model
+     * @return mixed
+     */
+    public function invites()
+    {
+        return $this->hasMany( Config::get('teamwork.invite_model'), 'id', 'team_id');
+    }
+    
     /**
      * Many-to-Many relations with the user model.
      *

@@ -1,7 +1,7 @@
 <?php namespace Teamwork\Traits;
 
 /**
- * This file is part of Entrust,
+ * This file is part of Teamwork,
  *
  * @license MIT
  * @package Teamwork
@@ -18,7 +18,16 @@ trait TeamworkUserTrait
      */
     public function teams()
     {
-        return $this->belongsToMany( Config::get( 'teamwork.team' ), Config::get( 'teamwork.team_user_table' ), Config::get( 'teamwork.user_foreign_key' ), 'team_id' );
+        return $this->belongsToMany( \Config::get( 'teamwork.team_model' ),\Config::get( 'teamwork.team_user_table' ), Config::get( 'teamwork.user_foreign_key' ), 'team_id' );
+    }
+
+    /**
+     * One-to-Many relation with the invite model
+     * @return mixed
+     */
+    public function invites()
+    {
+        return $this->hasMany( \Config::get('teamwork.invite_model'), 'user_id', \Config::get('teamwork.user_foreign_key'));
     }
 
     /**
@@ -33,7 +42,7 @@ trait TeamworkUserTrait
         parent::boot();
         static::deleting( function ( $user )
         {
-            if ( !method_exists( Config::get( 'auth.model' ), 'bootSoftDeletingTrait' ) )
+            if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletingTrait' ) )
             {
                 $user->teams()->sync( [ ] );
             }
@@ -69,7 +78,7 @@ trait TeamworkUserTrait
         {
             $team = $team[ "id" ];
         }
-        $teamModel   = Config::get( 'teamwork.team' );
+        $teamModel   = \Config::get( 'teamwork.team' );
         $teamKeyName = ( new $teamModel() )->getKeyName();
         return ( ( new $teamModel )
             ->where( "owner_id", "=", $this->getKey() )
