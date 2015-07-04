@@ -21,9 +21,9 @@ class Team extends Model
      *
      * @param array $attributes
      */
-    public function __construct(array $attributes = [])
+    public function __construct( array $attributes = [ ] )
     {
-        parent::__construct($attributes);
-        $this->table = Config::get('teamwork.teams_table');
+        parent::__construct( $attributes );
+        $this->table = Config::get( 'teamwork.teams_table' );
     }
 }

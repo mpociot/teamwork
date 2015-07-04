@@ -29,8 +29,8 @@ trait TeamworkTeamTrait
      */
     public function owner()
     {
-        $userModel   = Config::get('auth.model');
-        $userKeyName = (new $userModel())->getKeyName();
+        $userModel   = Config::get( 'auth.model' );
+        $userKeyName = ( new $userModel() )->getKeyName();
         return $this->hasOne(Config::get('auth.model'), $userKeyName, "owner_id");
     }
 

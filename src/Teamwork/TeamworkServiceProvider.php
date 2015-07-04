@@ -25,18 +25,29 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publish config files
-        $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('teamwork.php'),
-        ]);
+        $this->publishConfig();
+        $this->publishMigration();
+    }
 
-        /**
-         * @TODO publish migrations
-         *
-        $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('/migrations')
-        ], 'migrations');
-         */
+    /**
+     * Publish Teamwork configuration
+     */
+    private function publishConfig()
+    {
+        // Publish config files
+        $this->publishes( [
+            __DIR__ . '/../config/config.php' => config_path( 'teamwork.php' ),
+        ] );
+    }
+
+    /**
+     * Publish Teamwork migration
+     */
+    private function publishMigration()
+    {
+        $this->publishes( [
+            __DIR__ . '/../database/migrations/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
+        ], 'migrations' );
     }
 
     /**
@@ -46,58 +57,18 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerEntrust();
-
-        $this->registerCommands();
-
         $this->mergeConfig();
     }
 
     /**
-     * Register the application bindings.
-     *
-     * @return void
-     */
-    private function registerEntrust()
-    {
-        $this->app->bind('entrust', function ($app) {
-            return new Entrust($app);
-        });
-    }
-
-    /**
-     * Register the artisan commands.
-     *
-     * @return void
-     */
-    private function registerCommands()
-    {
-        $this->app->bindShared('command.entrust.migration', function ($app) {
-            return new MigrationCommand();
-        });
-    }
-
-    /**
-     * Merges user's and entrust's configs.
+     * Merges user's and teamwork's configs.
      *
      * @return void
      */
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/config.php', 'entrust'
+            __DIR__ . '/../config/config.php', 'teamwork'
         );
-    }
-
-    /**
-     * Get the services provided.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            'command.entrust.migration'
-        ];
     }
 }

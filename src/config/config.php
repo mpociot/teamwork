@@ -45,6 +45,6 @@ return [
     | User Foreign key on Teamwork's team_user Table (Pivot)
     |--------------------------------------------------------------------------
     */
-    'user_foreign_key' => 'user_id'
+    'user_foreign_key' => 'id'
 
 ];
