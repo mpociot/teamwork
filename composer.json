@@ -15,7 +15,7 @@
         "source": "https://github.com/mpociot/teamwork"
     },
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.5.9",
         "illuminate/database": "~5.0",
         "illuminate/support": "~5.0"
     },
@@ -24,7 +24,7 @@
 
         ],
         "psr-0": {
-            "Teamwork": "src/"
+            "Mpociot/Teamwork": "src/"
         }
     }
 }

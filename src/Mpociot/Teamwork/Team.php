@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
-use Teamwork\Traits\TeamworkTeamTrait;
+use Mpociot\Teamwork\Traits\TeamworkTeamTrait;
 
 
 class Team extends Model

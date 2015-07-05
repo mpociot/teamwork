@@ -1,4 +1,4 @@
-<?php namespace Teamwork;
+<?php namespace Mpociot\Teamwork;
 
 
 /**

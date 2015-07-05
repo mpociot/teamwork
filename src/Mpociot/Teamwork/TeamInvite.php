@@ -1,8 +1,8 @@
-<?php namespace Teamwork;
+<?php namespace Mpociot\Teamwork;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
-use Teamwork\Traits\TeamworkTeamInviteTrait;
+use Mpociot\Teamwork\Traits\TeamworkTeamInviteTrait;
 
 
 class TeamInvite extends Model

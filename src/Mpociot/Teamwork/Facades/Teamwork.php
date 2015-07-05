@@ -1,4 +1,4 @@
-<?php namespace Teamwork\Facades;
+<?php namespace Mpociot\Teamwork\Facades;
 
 class Vault extends \Illuminate\Support\Facades\Facade
 {
