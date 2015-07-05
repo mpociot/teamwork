@@ -20,11 +20,8 @@
         "illuminate/support": "~5.0"
     },
     "autoload": {
-        "classmap": [
-
-        ],
         "psr-0": {
-            "Mpociot/Teamwork": "src/"
+            "Mpociot\\Teamwork": "src/"
         }
     }
 }
