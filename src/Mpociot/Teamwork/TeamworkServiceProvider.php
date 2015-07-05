@@ -36,7 +36,7 @@ class TeamworkServiceProvider extends ServiceProvider
     {
         // Publish config files
         $this->publishes( [
-            __DIR__ . '/../config/config.php' => config_path( 'teamwork.php' ),
+            __DIR__ . '/../../config/config.php' => config_path( 'teamwork.php' ),
         ] );
     }
 
@@ -46,7 +46,7 @@ class TeamworkServiceProvider extends ServiceProvider
     private function publishMigration()
     {
         $this->publishes( [
-            __DIR__ . '/../database/migrations/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
+            __DIR__ . '/../../database/migrations/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
         ], 'migrations' );
     }
 
@@ -69,7 +69,7 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     private function registerTeamwork()
     {
-        $this->app->bind('vault', function($app) {
+        $this->app->bind('teamwork', function($app) {
             return new Teamwork($app);
         });
     }
@@ -94,7 +94,7 @@ class TeamworkServiceProvider extends ServiceProvider
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/config.php', 'teamwork'
+            __DIR__ . '/../../config/config.php', 'teamwork'
         );
     }
 }
