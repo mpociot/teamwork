@@ -1,5 +1,6 @@
 <?php namespace Mpociot\Teamwork;
 
+use Auth;
 
 /**
  * This file is part of Teamwork

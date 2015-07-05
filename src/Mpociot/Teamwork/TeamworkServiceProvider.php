@@ -83,7 +83,7 @@ class TeamworkServiceProvider extends ServiceProvider
         $this->app->booting(function()
         {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Teamwork', 'Teamwork\Facades\Teamwork');
+            $loader->alias('Teamwork', 'Mpociot\Teamwork\Facades\Teamwork');
         });
     }
     /**
