@@ -58,8 +58,34 @@ class TeamworkServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfig();
+        $this->registerTeamwork();
+        $this->registerFacade();
     }
 
+    /**
+     * Register the application bindings.
+     *
+     * @return void
+     */
+    private function registerTeamwork()
+    {
+        $this->app->bind('vault', function($app) {
+            return new Teamwork($app);
+        });
+    }
+
+    /**
+     * Register the vault facade without the user having to add it to the app.php file.
+     *
+     * @return void
+     */
+    public function registerFacade() {
+        $this->app->booting(function()
+        {
+            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader->alias('Teamwork', 'Teamwork\Facades\Teamwork');
+        });
+    }
     /**
      * Merges user's and teamwork's configs.
      *

@@ -22,13 +22,13 @@ trait TeamworkTeamInviteTrait
     }
 
     /**
-     * Has-One relations with the zser model.
+     * Has-One relations with the user model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function user()
     {
-        return $this->hasOne( Config::get( 'auth.model' ), Config::get( 'teamwork.user_foreign_key' ), 'user_id' );
+        return $this->hasOne( Config::get( 'auth.model' ), 'email', 'email' );
     }
 
 }

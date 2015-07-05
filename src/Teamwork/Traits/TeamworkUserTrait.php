@@ -22,12 +22,22 @@ trait TeamworkUserTrait
     }
 
     /**
+     * has-one relation with the current selected team model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function currentTeam()
+    {
+        return $this->hasOne( \Config::get( 'teamwork.team_model' ), 'team_id', 'current_team_id' );
+    }
+
+    /**
      * One-to-Many relation with the invite model
      * @return mixed
      */
     public function invites()
     {
-        return $this->hasMany( \Config::get('teamwork.invite_model'), 'user_id', \Config::get('teamwork.user_foreign_key'));
+        return $this->hasMany( \Config::get('teamwork.invite_model'), 'email', 'email' );
     }
 
     /**
@@ -101,7 +111,19 @@ trait TeamworkUserTrait
         {
             $team = $team[ "id" ];
         }
-        $this->teams()->attach( $team );
+        /**
+         * If the user has no current team,
+         * use the attached one
+         */
+        if( is_null( $this->current_team_id ) )
+        {
+            $this->current_team_id = $team;
+            $this->save();
+        }
+        if( !$this->teams->contains( $team ) )
+        {
+            $this->teams()->attach( $team );
+        }
     }
 
     /**
@@ -120,6 +142,15 @@ trait TeamworkUserTrait
             $team = $team[ "id" ];
         }
         $this->teams()->detach( $team );
+        /**
+         * If the user has no more teams,
+         * unset the current_team_id
+         */
+        if( count( $this->teams ) === 0 )
+        {
+            $this->current_team_id = null;
+            $this->save();
+        }
     }
 
     /**

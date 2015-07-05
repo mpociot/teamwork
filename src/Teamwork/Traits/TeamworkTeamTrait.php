@@ -44,4 +44,16 @@ trait TeamworkTeamTrait
         return $this->hasOne(Config::get('auth.model'), $userKeyName, "owner_id");
     }
 
+    /**
+     * Helper function to determine if a user is part
+     * of this team
+     *
+     * @param $user
+     * @return bool
+     */
+    public function hasUser( $user )
+    {
+        return $this->users()->where( $user->getKeyName(), "=", $user->getKey() )->first() ? true : false;
+    }
+
 }
