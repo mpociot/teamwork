@@ -17,7 +17,7 @@ return [
     | the team if it is in a different namespace.
     |
     */
-    'team_model' => Teamwork\Team::class,
+    'team_model' => Mpociot\Teamwork\Team::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     | Update the team if it is in a different namespace.
     |
     */
-    'invite_model' => Teamwork\TeamInvite::class,
+    'invite_model' => Mpociot\Teamwork\TeamInvite::class,
 
     /*
     |--------------------------------------------------------------------------
