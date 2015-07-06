@@ -179,4 +179,22 @@ trait TeamworkUserTrait
         }
     }
 
+    /**
+     * Switch the current team of the user
+     *
+     * @param object|array|integer $team
+     */
+    public function switchTeam( $team )
+    {
+        if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
+        {
+            $team = $team->getKey();
+        }
+        if ( is_array( $team ) && isset( $team[ "id" ] ) )
+        {
+            $team = $team[ "id" ];
+        }
+        $this->current_team_id = $team;
+        $this->save();
+    }
 }
