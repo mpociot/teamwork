@@ -7,7 +7,9 @@
  * @package Teamwork
  */
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
+use Mpociot\Teamwork\Exceptions\UserNotInTeamException;
 
 trait TeamworkUserTrait
 {
@@ -183,6 +185,8 @@ trait TeamworkUserTrait
      * Switch the current team of the user
      *
      * @param object|array|integer $team
+     * @throws ModelNotFoundException
+     * @throws UserNotInTeamException
      */
     public function switchTeam( $team )
     {
@@ -193,6 +197,20 @@ trait TeamworkUserTrait
         if ( is_array( $team ) && isset( $team[ "id" ] ) )
         {
             $team = $team[ "id" ];
+        }
+        $teamModel   = \Config::get( 'teamwork.team_model' );
+        $teamObject  = ( new $teamModel() )->find( $team );
+        if( !$teamObject )
+        {
+            $exception = new ModelNotFoundException();
+            $exception->setModel( $teamModel );
+            throw $exception;
+        }
+        if( !$teamObject->users->contains( $this->getKey() ) )
+        {
+            $exception = new UserNotInTeamException();
+            $exception->setTeam( $teamObject->name );
+            throw $exception;
         }
         $this->current_team_id = $team;
         $this->save();
