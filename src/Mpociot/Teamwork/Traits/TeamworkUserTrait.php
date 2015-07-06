@@ -28,7 +28,7 @@ trait TeamworkUserTrait
      */
     public function currentTeam()
     {
-        return $this->hasOne( \Config::get( 'teamwork.team_model' ), 'team_id', 'current_team_id' );
+        return $this->hasOne( \Config::get( 'teamwork.team_model' ), 'id', 'current_team_id' );
     }
 
     /**
