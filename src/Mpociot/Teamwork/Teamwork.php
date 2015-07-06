@@ -49,11 +49,17 @@ class Teamwork
         if ( is_null( $team ) )
         {
             $team = $this->user->currentTeam;
+        } elseif( is_object( $team ) )
+        {
+            $team = $team->getKey();
+        }elseif( is_array( $team ) )
+        {
+            $team = $team["id"];
         }
 
         $invite               = new TeamInvite();
         $invite->user_id      = $this->user()->getKey();
-        $invite->team_id      = $team->getKey();
+        $invite->team_id      = $team;
         $invite->type         = 'invite';
         $invite->email        = $email;
         $invite->accept_token = md5( uniqid( microtime() ) );
@@ -75,7 +81,15 @@ class Teamwork
      */
     public function hasPendingInvite( $email, $team )
     {
-        return TeamInvite::where('email', $email)->where('team_id', $team->getKey())->first() ? true : false;
+        if( is_object( $team ) )
+        {
+            $team = $team->getKey();
+        }
+        if( is_array( $team ) )
+        {
+            $team = $team["id"];
+        }
+        return TeamInvite::where('email', $email)->where('team_id', $team )->first() ? true : false;
     }
 
     /**
