@@ -18,7 +18,7 @@ trait TeamworkUserTrait
      */
     public function teams()
     {
-        return $this->belongsToMany( \Config::get( 'teamwork.team_model' ),\Config::get( 'teamwork.team_user_table' ), Config::get( 'teamwork.user_foreign_key' ), 'team_id' );
+        return $this->belongsToMany( \Config::get( 'teamwork.team_model' ),\Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' );
     }
 
     /**

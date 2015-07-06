@@ -40,7 +40,6 @@ class TeamworkSetupTables extends Migration
 
         Schema::create( \Config::get( 'teamwork.team_user_table' ), function ( $table )
         {
-            $table->increments( 'id' )->unsigned();
             $table->integer( 'user_id' )->unsigned();
             $table->integer( 'team_id' )->unsigned();
 
