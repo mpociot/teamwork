@@ -46,7 +46,7 @@ class TeamworkServiceProvider extends ServiceProvider
     private function publishMigration()
     {
         $this->publishes( [
-            __DIR__ . '/../../database/migrations/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
+            __DIR__ . '/../../database/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
         ], 'migrations' );
     }
 
