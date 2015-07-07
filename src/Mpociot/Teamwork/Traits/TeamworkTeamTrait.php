@@ -28,7 +28,7 @@ trait TeamworkTeamTrait
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('auth.model'), Config::get('teamwork.team_user_table'));
+        return $this->belongsToMany(Config::get('auth.model'), Config::get('teamwork.team_user_table'), 'team_id','user_id');
     }
 
     /**
