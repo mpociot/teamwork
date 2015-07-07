@@ -18,7 +18,7 @@ class TeamworkSetupTables extends Migration
             $table->integer( 'current_team_id' )->unsigned()->nullable();
         } );
 
-        Schema::create( str_singular( \Config::get( 'auth.table' ) ) . '_invites', function(Blueprint $table)
+        Schema::create( \Config::get( 'teamwork.team_invites_table' ), function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -72,7 +72,7 @@ class TeamworkSetupTables extends Migration
 
         Schema::drop(\Config::get('teamwork.team_user_table'));
         Schema::drop(\Config::get('teamwork.teams_table'));
-        Schema::drop( str_singular( \Config::get( 'auth.table' ) ) . '_invites');
+        Schema::drop(\Config::get('teamwork.team_invites_table'));
 
     }
 }
