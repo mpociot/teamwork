@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Traits\TeamworkTeamTrait;
 
 
-class Team extends Model
+class TeamworkTeam extends Model
 {
     use TeamworkTeamTrait;
 

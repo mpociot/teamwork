@@ -17,7 +17,7 @@ return [
     | the team if it is in a different namespace.
     |
     */
-    'team_model' => Mpociot\Teamwork\Team::class,
+    'team_model' => Mpociot\Teamwork\TeamworkTeam::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -67,5 +67,5 @@ return [
     | invitation into teams to the database.
     |
     */
-    'team_invites_table' => 'user_invites',
+    'team_invites_table' => 'team_invites',
 ];

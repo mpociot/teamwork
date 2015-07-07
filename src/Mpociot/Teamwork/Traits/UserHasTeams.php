@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Exceptions\UserNotInTeamException;
 
-trait TeamworkUserTrait
+trait UserHasTeams
 {
     /**
      * Many-to-Many relations with the user model.

@@ -48,7 +48,7 @@ class Teamwork
     {
         if ( is_null( $team ) )
         {
-            $team = $this->user->currentTeam;
+            $team = $this->user->current_team_id;
         } elseif( is_object( $team ) )
         {
             $team = $team->getKey();
