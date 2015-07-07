@@ -1,3 +1,5 @@
+<img src="http://www.titaniumcontrols.com/git/teamwork.jpg" style="width: 100%" alt="Teamwork" />
+
 # Teamwork (Laravel 5 Package)
 
 [![Build Status](https://travis-ci.org/mpociot/teamwork.svg)](https://travis-ci.org/mpociot/teamwork)
@@ -303,3 +305,5 @@ The `denyInvite` method is only responsible for deleting the invitation from the
 ## License
 
 Teamwork is free software distributed under the terms of the MIT license.
+
+'Marvel Avengers' image licensed under [Creative Commons 2.0](https://creativecommons.org/licenses/by/2.0/) - Photo from [W_Minshull](https://www.flickr.com/photos/23950335@N07/8251484285/in/photostream/) 
