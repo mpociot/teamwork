@@ -67,5 +67,5 @@ return [
     | invitation into teams to the database.
     |
     */
-    'team_invites_table' => 'team_invites',
+    'team_invites_table' => 'user_invites',
 ];
