@@ -33,16 +33,16 @@ class Teamwork
      */
     public function user()
     {
-        return Auth::user();
+        return $this->app->auth->user();
     }
 
     /**
      * Invite an email adress to a team.
      * If no team is given, the current_team_id will be used instead.
      *
-     * @param $email
-     * @param null|Team $team
-     * @param callable $success
+     * @param            $email
+     * @param null|Team  $team
+     * @param callable   $success
      */
     public function inviteToTeam( $email, $team = null, callable $success = null )
     {
@@ -57,7 +57,7 @@ class Teamwork
             $team = $team["id"];
         }
 
-        $invite               = new TeamInvite();
+        $invite               = $this->app->make('Mpociot\Teamwork\TeamInvite');
         $invite->user_id      = $this->user()->getKey();
         $invite->team_id      = $team;
         $invite->type         = 'invite';
@@ -76,7 +76,7 @@ class Teamwork
      * Checks if the given email address has a pending invite for the
      * provided Team
      * @param $email
-     * @param Team $team
+     * @param Team|array|integer $team
      * @return bool
      */
     public function hasPendingInvite( $email, $team )
@@ -89,7 +89,7 @@ class Teamwork
         {
             $team = $team["id"];
         }
-        return TeamInvite::where('email', $email)->where('team_id', $team )->first() ? true : false;
+        return $this->app->make('Mpociot\Teamwork\TeamInvite')->where('email', "=", $email)->where('team_id', "=", $team )->first() ? true : false;
     }
 
     /**
@@ -98,7 +98,7 @@ class Teamwork
      */
     public function getInviteFromAcceptToken( $token )
     {
-        return TeamInvite::where('accept_token', '=', $token)->first();
+        return $this->app->make('Mpociot\Teamwork\TeamInvite')->where('accept_token', '=', $token)->first();
     }
 
     /**
@@ -116,7 +116,7 @@ class Teamwork
      */
     public function getInviteFromDenyToken( $token )
     {
-        return TeamInvite::where('deny_token', '=', $token)->first();
+        return $this->app->make('Mpociot\Teamwork\TeamInvite')->where('deny_token', '=', $token)->first();
     }
 
     /**

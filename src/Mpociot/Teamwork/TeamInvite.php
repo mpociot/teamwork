@@ -24,6 +24,6 @@ class TeamInvite extends Model
     public function __construct( array $attributes = [ ] )
     {
         parent::__construct( $attributes );
-        $this->table = \Config::get( 'teamwork.team_invites_table' );
+        $this->table = Config::get( 'teamwork.team_invites_table' );
     }
 }
