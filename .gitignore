@@ -1,13 +1,8 @@
-### Docs ###
-build/
-cache/
-
 ### PHP ###
 
 /bootstrap/compiled.php
 /vendor
 composer.phar
-sami.phar
 .DS_Store
 Thumbs.db
 
