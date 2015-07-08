@@ -59,7 +59,7 @@ The default configuration should work just fine for you, but you can take a look
 <a name="user-relation-to-team" />
 ### User relation to teams
 
-Run the `migration` command, to generate all tables neede for Teamwork.
+Run the `migration` command, to generate all tables needed for Teamwork.
 
 
 ```bash
@@ -219,8 +219,6 @@ try {
 ```
 
 Just like the `isOwnerOfTeam` method, `switchTeam` accepts a Team object, array or id as a parameter.
-
-If you try to switch
 
 <a name="inviting-others" />
 ### Inviting others
