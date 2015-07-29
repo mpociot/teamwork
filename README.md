@@ -6,9 +6,6 @@
 
 Teamwork is the fastest and easiest method to add a User / Team association with Invites to your **Laravel 5** project.
 
-**This package is still under development. Until a 1.0 Version is released, the API is likely to change.**
-
-
 ## Contents
 
 - [Installation](#installation)
@@ -212,13 +209,15 @@ Glad we have the `UserHasTeams` trait.
 ```php
 try {
 	Auth::user()->switchTeam( $team_id );
+	// Or remove a team association at all
+	Auth::user()->switchTeam( null );
 } catch( UserNotInTeamException $e )
 {
 	// Given team is not allowed for the user
 }
 ```
 
-Just like the `isOwnerOfTeam` method, `switchTeam` accepts a Team object, array or id as a parameter.
+Just like the `isOwnerOfTeam` method, `switchTeam` accepts a Team object, array, id or null as a parameter.
 
 <a name="inviting-others" />
 ### Inviting others

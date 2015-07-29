@@ -190,27 +190,30 @@ trait UserHasTeams
      */
     public function switchTeam( $team )
     {
-        if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
+        if( $team !== 0 && $team !== null )
         {
-            $team = $team->getKey();
-        }
-        if ( is_array( $team ) && isset( $team[ "id" ] ) )
-        {
-            $team = $team[ "id" ];
-        }
-        $teamModel   = \Config::get( 'teamwork.team_model' );
-        $teamObject  = ( new $teamModel() )->find( $team );
-        if( !$teamObject )
-        {
-            $exception = new ModelNotFoundException();
-            $exception->setModel( $teamModel );
-            throw $exception;
-        }
-        if( !$teamObject->users->contains( $this->getKey() ) )
-        {
-            $exception = new UserNotInTeamException();
-            $exception->setTeam( $teamObject->name );
-            throw $exception;
+            if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
+            {
+                $team = $team->getKey();
+            }
+            if ( is_array( $team ) && isset( $team[ "id" ] ) )
+            {
+                $team = $team[ "id" ];
+            }
+            $teamModel   = \Config::get( 'teamwork.team_model' );
+            $teamObject  = ( new $teamModel() )->find( $team );
+            if( !$teamObject )
+            {
+                $exception = new ModelNotFoundException();
+                $exception->setModel( $teamModel );
+                throw $exception;
+            }
+            if( !$teamObject->users->contains( $this->getKey() ) )
+            {
+                $exception = new UserNotInTeamException();
+                $exception->setTeam( $teamObject->name );
+                throw $exception;
+            }
         }
         $this->current_team_id = $team;
         $this->save();
