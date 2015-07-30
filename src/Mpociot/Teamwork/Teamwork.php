@@ -106,7 +106,7 @@ class Teamwork
      */
     public function acceptInvite( TeamInvite $invite )
     {
-        $this->user->attachTeam( $invite->team );
+        $this->user()->attachTeam( $invite->team );
         $invite->delete();
     }
 
