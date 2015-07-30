@@ -18,7 +18,7 @@ trait TeamworkTeamTrait
      */
     public function invites()
     {
-        return $this->hasMany( Config::get('teamwork.invite_model'), 'id', 'team_id');
+        return $this->hasMany( Config::get('teamwork.invite_model'), 'team_id', 'id');
     }
     
     /**
