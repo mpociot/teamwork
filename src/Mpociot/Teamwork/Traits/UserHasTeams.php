@@ -90,7 +90,7 @@ trait UserHasTeams
         {
             $team = $team[ "id" ];
         }
-        $teamModel   = \Config::get( 'teamwork.team' );
+        $teamModel   = \Config::get( 'teamwork.team_model' );
         $teamKeyName = ( new $teamModel() )->getKeyName();
         return ( ( new $teamModel )
             ->where( "owner_id", "=", $this->getKey() )
