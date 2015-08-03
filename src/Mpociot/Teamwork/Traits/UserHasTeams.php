@@ -102,6 +102,7 @@ trait UserHasTeams
      * Alias to eloquent many-to-many relation's attach() method.
      *
      * @param mixed $team
+     * @return $this
      */
     public function attachTeam( $team )
     {
@@ -126,12 +127,14 @@ trait UserHasTeams
         {
             $this->teams()->attach( $team );
         }
+        return $this;
     }
 
     /**
      * Alias to eloquent many-to-many relation's detach() method.
      *
      * @param mixed $team
+     * @return $this
      */
     public function detachTeam( $team )
     {
@@ -153,12 +156,14 @@ trait UserHasTeams
             $this->current_team_id = null;
             $this->save();
         }
+        return $this;
     }
 
     /**
      * Attach multiple teams to a user
      *
      * @param mixed $teams
+     * @return $this
      */
     public function attachTeams( $teams )
     {
@@ -166,12 +171,14 @@ trait UserHasTeams
         {
             $this->attachTeam( $team );
         }
+        return $this;
     }
 
     /**
      * Detach multiple teams from a user
      *
      * @param mixed $teams
+     * @return $this
      */
     public function detachTeams( $teams )
     {
@@ -179,12 +186,14 @@ trait UserHasTeams
         {
             $this->detachTeam( $team );
         }
+        return $this;
     }
 
     /**
      * Switch the current team of the user
      *
      * @param object|array|integer $team
+     * @return $this
      * @throws ModelNotFoundException
      * @throws UserNotInTeamException
      */
@@ -217,5 +226,6 @@ trait UserHasTeams
         }
         $this->current_team_id = $team;
         $this->save();
+        return $this;
     }
 }

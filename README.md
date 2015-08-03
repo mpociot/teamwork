@@ -33,9 +33,11 @@ In order to install Laravel 5 Teamwork, just add
 
 to your composer.json. Then run `composer install` or `composer update`.
 
+(or run `composer require mpociot/teamwork` if you prefere that)
+
 Then in your `config/app.php` add 
 
-    'Mpociot\Teamwork\TeamworkServiceProvider'
+    Mpociot\Teamwork\TeamworkServiceProvider::class
     
 in the `providers` array.
     
@@ -204,6 +206,9 @@ The `isOwnerOfTeam` method also allows an array or id as team parameter.
 ### Switching the current team
 
 If your Users are members of multiple teams you might want to give them access to a `switch team` mechanic in some way. 
+
+This means that the user has one "active" team, that is currently assigned to the user. All other teams still remain attached to the relation!
+
 Glad we have the `UserHasTeams` trait.
 
 ```php
