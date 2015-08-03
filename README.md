@@ -33,9 +33,11 @@ In order to install Laravel 5 Teamwork, just add
 
 to your composer.json. Then run `composer install` or `composer update`.
 
+(or run "composer require mpociot/teamwork" if you prefere that)
+
 Then in your `config/app.php` add 
 
-    'Mpociot\Teamwork\TeamworkServiceProvider'
+    'Mpociot\Teamwork\TeamworkServiceProvider::class'
     
 in the `providers` array.
     
