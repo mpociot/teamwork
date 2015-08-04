@@ -4,11 +4,8 @@
 /vendor
 composer.phar
 phpunit.phar
-.DS_Store
-Thumbs.db
 
 /conf
-.idea
 /.settings
 .env.*.php
 .env.php
