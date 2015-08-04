@@ -73,6 +73,16 @@ trait UserHasTeams
         return ( $this->teams()->where( "owner_id", "=", $this->getKey() )->first() ) ? true : false;
     }
 
+    /**
+     * Wrapper method for "isOwner"
+     *
+     * @return bool
+     */
+    public function isTeamOwner()
+    {
+        return $this->isOwner();
+    }
+
 
     /**
      * Returns if the user owns the given team

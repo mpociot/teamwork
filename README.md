@@ -115,7 +115,7 @@ class User extends Model {
 }
 ```
 
-This will enable the relation with `Team` and add the following methods `teams()`, `currentTeam()`, `invites()`, `isOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team)`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
+This will enable the relation with `Team` and add the following methods `teams()`, `currentTeam()`, `invites()`, `isTeamOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team)`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
 
 Don't forget to dump composer autoload
 
@@ -182,10 +182,10 @@ The `Team` model has access to these methods:
 <a name="team-owner" />
 ### Team owner
 
-If you need to check if the User is a team owner (regardless of the current team) use the `isOwner()` method on the User model.
+If you need to check if the User is a team owner (regardless of the current team) use the `isTeamOwner()` method on the User model.
 
 ```php
-if( Auth::user()->isOwner() )
+if( Auth::user()->isTeamOwner() )
 {
 	echo "I'm a team owner. Please let me pay more.";
 }
