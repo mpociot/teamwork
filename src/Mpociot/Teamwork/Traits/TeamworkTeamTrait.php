@@ -7,6 +7,7 @@
  * @package Teamwork
  */
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
 trait TeamworkTeamTrait
@@ -48,10 +49,10 @@ trait TeamworkTeamTrait
      * Helper function to determine if a user is part
      * of this team
      *
-     * @param $user
+     * @param Model $user
      * @return bool
      */
-    public function hasUser( $user )
+    public function hasUser( Model $user )
     {
         return $this->users()->where( $user->getKeyName(), "=", $user->getKey() )->first() ? true : false;
     }

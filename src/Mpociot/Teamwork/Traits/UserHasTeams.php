@@ -7,6 +7,7 @@
  * @package Teamwork
  */
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Exceptions\UserNotInTeamException;
@@ -60,7 +61,7 @@ trait UserHasTeams
     public static function boot()
     {
         parent::boot();
-        static::deleting( function ( $user )
+        static::deleting( function ( Model $user )
         {
             if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletingTrait' ) )
             {
