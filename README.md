@@ -115,7 +115,7 @@ class User extends Model {
 }
 ```
 
-This will enable the relation with `Team` and add the following methods `teams()`, `currentTeam()`, `invites()`, `isTeamOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team)`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
+This will enable the relation with `Team` and add the following methods `teams()`, `ownedTeams()` `currentTeam()`, `invites()`, `isTeamOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team)`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
 
 Don't forget to dump composer autoload
 
@@ -167,8 +167,13 @@ The currently assigned Team of a user can be accessed through the `currentTeam` 
 ```php
 echo "I'm currently in team: " . Auth::user()->currentTeam->name;
 echo "The team owner is: " . Auth::user()->currentTeam->owner->username;
+
 echo "I also have these teams: ";
 print_r( Auth::user()->teams );
+
+echo "I am the owner of these teams: ";
+print_r( Auth::user()->ownedTeams );
+
 echo "My team has " . Auth::user()->currentTeam->users->count() . " users.";
 ```
 
