@@ -34,6 +34,14 @@ trait UserHasTeams
     }
 
     /**
+     * @return mixed
+     */
+    public function ownedTeams()
+    {
+        return $this->teams()->where( "owner_id", "=", $this->getKey() );
+    }
+
+    /**
      * One-to-Many relation with the invite model
      * @return mixed
      */
@@ -71,6 +79,16 @@ trait UserHasTeams
     public function isOwner()
     {
         return ( $this->teams()->where( "owner_id", "=", $this->getKey() )->first() ) ? true : false;
+    }
+
+    /**
+     * Wrapper method for "isOwner"
+     *
+     * @return bool
+     */
+    public function isTeamOwner()
+    {
+        return $this->isOwner();
     }
 
 
