@@ -58,9 +58,8 @@ trait UserHasTeams
      *
      * @return void|bool
      */
-    public static function boot()
+    public static function bootUserHasTeams()
     {
-        parent::boot();
         static::deleting( function ( Model $user )
         {
             if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletingTrait' ) )
