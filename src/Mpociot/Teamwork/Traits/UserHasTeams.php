@@ -62,7 +62,7 @@ trait UserHasTeams
     {
         static::deleting( function ( Model $user )
         {
-            if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletingTrait' ) )
+            if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletes' ) )
             {
                 $user->teams()->sync( [ ] );
             }
