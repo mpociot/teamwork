@@ -247,6 +247,18 @@ Teamwork::inviteToTeam( $email, $team, function( $invite )
 });
 ```
 
+You can also send invites by providing an object with an `email` property like:
+
+```php
+$user = Auth::user();
+
+Teamwork::inviteToTeam( $user , $team, function( $invite )
+{
+	// Send email to user / let them know that they got invited
+});
+```
+
+
 This method will create a `TeamworkInvite` model and return it in the callable third parameter.
 
 This model has these attributes:
