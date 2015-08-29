@@ -60,7 +60,6 @@ class Teamwork
 
         if( is_object( $user ) && isset($user->email) )
         {
-            var_dump($user->email);
             $email = $user->email;
         } elseif( is_string($user) ) {
             $email = $user;
