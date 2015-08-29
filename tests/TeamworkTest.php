@@ -180,4 +180,81 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $teamwork->hasPendingInvite( $email, $team_id ) );
     }
 
+    public function testCanInviteToTeam()
+    {
+        /*
+        |------------------------------------------------------------
+        | Set
+        |------------------------------------------------------------
+        */
+        $email = "asd@fake.com";
+        $team_id = 1;
+
+        $app = m::mock('App');
+        $teamwork = new Teamwork($app);
+        $app->auth = m::mock('Auth');
+        $user = m::mock('User');
+        $user->shouldReceive('getKey')->once()->andReturn(1);
+
+        $app->auth->shouldReceive('user')
+            ->andReturn($user)
+            ->once();
+        $teaminvite = m::mock('Mpociot\Teamwork\TeamInvite');
+        $app->shouldReceive('make')->with('Mpociot\Teamwork\TeamInvite')->once()->andReturn( $teaminvite );
+
+        /*
+        |------------------------------------------------------------
+        | Expectation
+        |------------------------------------------------------------
+        */
+        $teaminvite->shouldReceive('setAttribute')->andReturnSelf();
+        $teaminvite->shouldReceive('save')->once()->andReturnSelf();
+
+        $callback = m::mock('stdClass');
+        $callback->shouldReceive('callback')->once()
+            ->with( $teaminvite )->andReturn();
+
+        $teamwork->inviteToTeam( $email, $team_id, array($callback,'callback') );
+
+    }
+
+    public function testCanInviteToTeamWithObject()
+    {
+        /*
+        |------------------------------------------------------------
+        | Set
+        |------------------------------------------------------------
+        */
+        $email = "asd@fake.com";
+        $team_id = 1;
+
+        $app = m::mock('App');
+        $teamwork = new Teamwork($app);
+        $app->auth = m::mock('Auth');
+        $user = m::mock('User');
+        $user->email = "test@mail.de";
+        $user->shouldReceive('getKey')->once()->andReturn(1);
+
+        $app->auth->shouldReceive('user')
+            ->andReturn($user)
+            ->once();
+        $teaminvite = m::mock('Mpociot\Teamwork\TeamInvite');
+        $app->shouldReceive('make')->with('Mpociot\Teamwork\TeamInvite')->once()->andReturn( $teaminvite );
+
+        /*
+        |------------------------------------------------------------
+        | Expectation
+        |------------------------------------------------------------
+        */
+        $teaminvite->shouldReceive('setAttribute')->andReturnSelf();
+        $teaminvite->shouldReceive('save')->once()->andReturnSelf();
+
+        $callback = m::mock('stdClass');
+        $callback->shouldReceive('callback')->once()
+            ->with( $teaminvite )->andReturn();
+
+        $teamwork->inviteToTeam( $user, $team_id, array($callback,'callback') );
+
+    }
+
 }
