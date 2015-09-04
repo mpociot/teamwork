@@ -21,7 +21,7 @@ trait UserHasTeams
      */
     public function teams()
     {
-        return $this->belongsToMany( \Config::get( 'teamwork.team_model' ),\Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' );
+        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' );
     }
 
     /**
@@ -31,7 +31,7 @@ trait UserHasTeams
      */
     public function currentTeam()
     {
-        return $this->hasOne( \Config::get( 'teamwork.team_model' ), 'id', 'current_team_id' );
+        return $this->hasOne( Config::get( 'teamwork.team_model' ), 'id', 'current_team_id' );
     }
 
     /**
@@ -48,7 +48,7 @@ trait UserHasTeams
      */
     public function invites()
     {
-        return $this->hasMany( \Config::get('teamwork.invite_model'), 'email', 'email' );
+        return $this->hasMany( Config::get('teamwork.invite_model'), 'email', 'email' );
     }
 
     /**
@@ -62,7 +62,7 @@ trait UserHasTeams
     {
         static::deleting( function ( Model $user )
         {
-            if ( !method_exists( \Config::get( 'auth.model' ), 'bootSoftDeletes' ) )
+            if ( !method_exists( Config::get( 'auth.model' ), 'bootSoftDeletes' ) )
             {
                 $user->teams()->sync( [ ] );
             }
@@ -91,6 +91,23 @@ trait UserHasTeams
         return $this->isOwner();
     }
 
+    /**
+     * @param $team
+     * @return mixed
+     */
+    protected function retrieveTeamId( $team )
+    {
+        if ( is_object( $team ) )
+        {
+            $team = $team->getKey();
+        }
+        if ( is_array( $team ) && isset( $team[ "id" ] ) )
+        {
+            $team = $team[ "id" ];
+        }
+        return $team;
+    }
+
 
     /**
      * Returns if the user owns the given team
@@ -100,15 +117,8 @@ trait UserHasTeams
      */
     public function isOwnerOfTeam( $team )
     {
-        if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
-        {
-            $team = $team->getKey();
-        }
-        if ( is_array( $team ) && isset( $team[ "id" ] ) )
-        {
-            $team = $team[ "id" ];
-        }
-        $teamModel   = \Config::get( 'teamwork.team_model' );
+        $team        = $this->retrieveTeamId( $team );
+        $teamModel   = Config::get( 'teamwork.team_model' );
         $teamKeyName = ( new $teamModel() )->getKeyName();
         return ( ( new $teamModel )
             ->where( "owner_id", "=", $this->getKey() )
@@ -124,14 +134,7 @@ trait UserHasTeams
      */
     public function attachTeam( $team )
     {
-        if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
-        {
-            $team = $team->getKey();
-        }
-        if ( is_array( $team ) && isset( $team[ "id" ] ) )
-        {
-            $team = $team[ "id" ];
-        }
+        $team        = $this->retrieveTeamId( $team );
         /**
          * If the user has no current team,
          * use the attached one
@@ -156,14 +159,7 @@ trait UserHasTeams
      */
     public function detachTeam( $team )
     {
-        if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
-        {
-            $team = $team->getKey();
-        }
-        if ( is_array( $team ) && isset( $team[ "id" ] ) )
-        {
-            $team = $team[ "id" ];
-        }
+        $team        = $this->retrieveTeamId( $team );
         $this->teams()->detach( $team );
         /**
          * If the user has no more teams,
@@ -219,15 +215,8 @@ trait UserHasTeams
     {
         if( $team !== 0 && $team !== null )
         {
-            if ( is_object( $team ) && method_exists( $team, 'getKey' ) )
-            {
-                $team = $team->getKey();
-            }
-            if ( is_array( $team ) && isset( $team[ "id" ] ) )
-            {
-                $team = $team[ "id" ];
-            }
-            $teamModel   = \Config::get( 'teamwork.team_model' );
+            $team        = $this->retrieveTeamId( $team );
+            $teamModel   = Config::get( 'teamwork.team_model' );
             $teamObject  = ( new $teamModel() )->find( $team );
             if( !$teamObject )
             {
