@@ -15,4 +15,9 @@
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/Mpociot/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
