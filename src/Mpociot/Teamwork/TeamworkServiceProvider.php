@@ -32,7 +32,7 @@ class TeamworkServiceProvider extends ServiceProvider
     /**
      * Publish Teamwork configuration
      */
-    private function publishConfig()
+    protected function publishConfig()
     {
         // Publish config files
         $this->publishes( [
@@ -43,7 +43,7 @@ class TeamworkServiceProvider extends ServiceProvider
     /**
      * Publish Teamwork migration
      */
-    private function publishMigration()
+    protected function publishMigration()
     {
         $published_migration = glob( database_path( '/migrations/*_teamwork_setup_tables.php' ) );
         if( count( $published_migration ) === 0 )
@@ -71,7 +71,7 @@ class TeamworkServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerTeamwork()
+    protected function registerTeamwork()
     {
         $this->app->bind('teamwork', function($app) {
             return new Teamwork($app);
@@ -95,7 +95,7 @@ class TeamworkServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function mergeConfig()
+    protected function mergeConfig()
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/config.php', 'teamwork'
