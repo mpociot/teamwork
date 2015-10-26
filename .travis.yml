@@ -15,4 +15,9 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit --verbose
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+before_install:
+  - pip install --user codecov
+after_success:
+  - codecov
