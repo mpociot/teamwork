@@ -51,7 +51,7 @@ The `Teamwork` Facade will be installed automatically within the Service Provide
 <a name="configuration"/>
 ## Configuration
 
-To publish Teamwork's configuration and migration files, run the `vendor:publish` command
+To publish Teamwork's configuration and migration files, run the `vendor:publish` command.
 
 ```bash
 php artisan vendor:publish --provider="Mpociot\Teamwork\TeamworkServiceProvider"
@@ -64,6 +64,7 @@ The default configuration should work just fine for you, but you can take a look
 ### User relation to teams
 
 Run the `migration` command, to generate all tables needed for Teamwork.
+**If your users are stored in a different table other than `users` be sure to modify the published migration.**
 
 
 ```bash
