@@ -39,11 +39,17 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
             ->with('teamwork.team_user_table')
             ->andReturn('TeamUser');
 
-        $stub = m::mock( 'TestUserTeamTraitStub[belongsToMany]' );
+        $stub = m::mock( 'TestUserTeamTraitStub[belongsToMany,withTimestamps]' );
+
+        $stub->shouldReceive('withTimestamps')
+            ->once()
+            ->andReturn([]);
+
         $stub->shouldReceive('belongsToMany')
             ->once()
             ->with('User', 'TeamUser', 'team_id', 'user_id' )
-            ->andReturn( [] );
+            ->andReturnSelf();
+
         $this->assertEquals( [], $stub->users() );
     }
 
