@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Teamwork;
 use Mockery as m;
 
@@ -50,8 +51,15 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app = m::mock('App');
         $teamwork = new Teamwork($app);
         $token = "asd";
-        $teaminvite = m::mock('TeamInvite');
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -80,8 +88,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app = m::mock('App');
         $teamwork = new Teamwork($app);
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -110,7 +124,7 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app = m::mock('App');
         $teamwork = new Teamwork($app);
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
+        $teaminvite = m::mock('Mpociot\Teamwork\TeamInvite');
 
         /*
         |------------------------------------------------------------
@@ -136,8 +150,15 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app = m::mock('App');
         $teamwork = new Teamwork($app);
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -165,8 +186,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app = m::mock('App');
         $teamwork = new Teamwork($app);
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -195,8 +222,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $team = m::mock('stdClass');
         $team->shouldReceive('getKey')->once()->andReturn( $team_id );
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -224,8 +257,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $teamwork = new Teamwork($app);
         $team = ["id" => $team_id];
         $token = "asd";
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -258,8 +297,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user)
             ->once();
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -300,8 +345,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user)
             ->once();
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -341,8 +392,14 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user)
             ->once();
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -381,8 +438,13 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user);
 
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->once()->andReturn( $teaminvite );
+        $inviteClass = 'Mpociot\Teamwork\TeamInvite';
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.invite_model')
+            ->andReturn($inviteClass);
+        $teaminvite = m::mock($inviteClass);
+        $app->shouldReceive('make')->with($inviteClass)->once()->andReturn( $teaminvite );
 
         /*
         |------------------------------------------------------------
@@ -420,9 +482,7 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user);
 
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
-
-        $app->shouldReceive('make')->with(\Config::get('teamwork.invite_model'))->never();
+        $app->shouldReceive('make')->with('Mpociot\Teamwork\TeamInvite')->never();
 
         $this->setExpectedException('Exception','The provided object has no "email" attribute and is not a string.');
 
@@ -448,7 +508,7 @@ class TeamworkTest extends PHPUnit_Framework_TestCase
         $app->auth->shouldReceive('user')
             ->andReturn($user);
 
-        $teaminvite = m::mock(\Config::get('teamwork.invite_model'));
+        $teaminvite = m::mock('Mpociot\Teamwork\TeamInvite');
         $teaminvite->shouldReceive('setAttribute')->andReturnSelf();
         $teaminvite->shouldReceive('getAttribute')->andReturnSelf();
         $teaminvite->team = "1";
