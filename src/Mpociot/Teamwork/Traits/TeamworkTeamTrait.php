@@ -29,7 +29,7 @@ trait TeamworkTeamTrait
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('auth.model'), Config::get('teamwork.team_user_table'), 'team_id','user_id')->withTimestamps();
+        return $this->belongsToMany(Config::get( 'teamwork.user_model' ), Config::get('teamwork.team_user_table'), 'team_id','user_id')->withTimestamps();
     }
 
     /**
@@ -40,9 +40,9 @@ trait TeamworkTeamTrait
      */
     public function owner()
     {
-        $userModel   = Config::get( 'auth.model' );
+        $userModel   = Config::get( 'teamwork.user_model' );
         $userKeyName = ( new $userModel() )->getKeyName();
-        return $this->hasOne(Config::get('auth.model'), $userKeyName, "owner_id");
+        return $this->hasOne(Config::get( 'teamwork.user_model' ), $userKeyName, "owner_id");
     }
 
     /**
