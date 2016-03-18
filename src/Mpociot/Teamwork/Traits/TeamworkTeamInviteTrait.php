@@ -28,7 +28,7 @@ trait TeamworkTeamInviteTrait
      */
     public function user()
     {
-        return $this->hasOne( Config::get( 'auth.model' ), 'email', 'email' );
+        return $this->hasOne( Config::get( 'teamwork.user_model' ), 'email', 'email' );
     }
 
 }
