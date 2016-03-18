@@ -31,7 +31,7 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
     {
         Config::shouldReceive('get')
             ->once()
-            ->with('auth.model')
+            ->with('teamwork.user_model')
             ->andReturn('User');
 
         Config::shouldReceive('get')
@@ -57,7 +57,7 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
     {
         Config::shouldReceive('get')
             ->once()
-            ->with('auth.model')
+            ->with('teamwork.user_model')
             ->andReturn('TestUser');
 
 

@@ -31,7 +31,7 @@ class TeamworkTeamInviteTraitTest extends PHPUnit_Framework_TestCase
     {
         Config::shouldReceive('get')
             ->once()
-            ->with('auth.model')
+            ->with('teamwork.user_model')
             ->andReturn('User');
 
         $stub = m::mock( 'TestUserTeamInviteTraitStub[hasOne]' );
