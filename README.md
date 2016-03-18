@@ -32,11 +32,16 @@ Teamwork is the fastest and easiest method to add a User / Team association with
 <a name="installation" />
 ## Installation
 
-In order to install Laravel 5 Teamwork, just add 
+## For Laravel 5.0 / 5.1
 
-    "mpociot/teamwork": "~1.0"
+    "mpociot/teamwork": "~2.0"
 
-to your composer.json. Then run `composer install` or `composer update`.
+## For Laravel 5.2
+
+    "mpociot/teamwork": "~3.0"
+
+
+Add the version you need to your composer.json. Then run `composer install` or `composer update`.
 
 (or run `composer require mpociot/teamwork` if you prefere that)
 
