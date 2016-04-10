@@ -80,7 +80,7 @@ class Teamwork
 
         if ( !is_null( $success ) )
         {
-            $success( $invite );
+            return $success( $invite );
         }
     }
 
