@@ -266,7 +266,7 @@ Teamwork::inviteToTeam( $user , $team, function( $invite )
 ```
 
 
-This method will create a `TeamworkInvite` model and return it in the callable third parameter.
+This method will create a `TeamInvite` model and return it in the callable third parameter.
 
 This model has these attributes:
 
