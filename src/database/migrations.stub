@@ -28,6 +28,10 @@ class TeamworkSetupTables extends Migration
             $table->string('accept_token');
             $table->string('deny_token');
             $table->timestamps();
+            $table->foreign( 'team_id' )
+                ->references( 'id' )
+                ->on( \Config::get( 'teamwork.teams_table' ) )
+                ->onDelete( 'cascade' );
         });
 
         Schema::create( \Config::get( 'teamwork.teams_table' ), function ( $table )
