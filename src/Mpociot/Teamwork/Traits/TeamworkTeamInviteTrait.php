@@ -31,4 +31,14 @@ trait TeamworkTeamInviteTrait
         return $this->hasOne( Config::get( 'teamwork.user_model' ), 'email', 'email' );
     }
 
+    /**
+     * Has-One relations with the user model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function inviter()
+    {
+        return $this->hasOne( Config::get( 'teamwork.user_model' ), 'id', 'user_id' );
+    }
+
 }

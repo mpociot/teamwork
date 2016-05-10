@@ -278,6 +278,7 @@ In addition to these attributes, the model has these relations:
 
 - `user()` &mdash; one-to-one relation using the `email` as a unique identifier on the User model.
 - `team()` &mdash; one-to-one relation return the Team, that invite was aiming for.
+- `inviter()` &mdash; one-to-one relation return the User, that created the invite.
 
 **Note:**
 The `inviteToTeam` method will **not** check if the given email already has a pending invite. To check for pending invites use the `hasPendingInvite` method on the `Teamwork` facade.

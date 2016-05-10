@@ -42,6 +42,21 @@ class TeamworkTeamInviteTraitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( [], $stub->user() );
     }
 
+    public function testGetInviter()
+    {
+        Config::shouldReceive('get')
+            ->once()
+            ->with('teamwork.user_model')
+            ->andReturn('User');
+
+        $stub = m::mock( 'TestUserTeamInviteTraitStub[hasOne]' );
+        $stub->shouldReceive('hasOne')
+            ->once()
+            ->with('User', 'id', 'user_id' )
+            ->andReturn( [] );
+        $this->assertEquals( [], $stub->inviter() );
+    }
+
 }
 
 class TestUserTeamInviteTraitStub extends Illuminate\Database\Eloquent\Model {
