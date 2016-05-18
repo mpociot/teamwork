@@ -21,7 +21,7 @@ trait UserHasTeams
      */
     public function teams()
     {
-        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' );
+        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' )->withTimestamps();
     }
 
     /**

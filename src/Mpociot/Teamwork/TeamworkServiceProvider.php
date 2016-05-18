@@ -8,6 +8,7 @@
  */
 
 use Illuminate\Support\ServiceProvider;
+use Mpociot\Teamwork\Commands\MakeTeamwork;
 
 class TeamworkServiceProvider extends ServiceProvider
 {
@@ -64,6 +65,7 @@ class TeamworkServiceProvider extends ServiceProvider
         $this->mergeConfig();
         $this->registerTeamwork();
         $this->registerFacade();
+        $this->registerCommands();
     }
 
     /**
@@ -100,5 +102,19 @@ class TeamworkServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/config.php', 'teamwork'
         );
+    }
+
+    /**
+     * Register scaffolding command
+     */
+    protected function registerCommands()
+    {
+        $this->app['make.teamwork'] = $this->app->share(function () {
+            return new MakeTeamwork();
+        });
+
+        $this->commands([
+            'make.teamwork'
+        ]);
     }
 }
