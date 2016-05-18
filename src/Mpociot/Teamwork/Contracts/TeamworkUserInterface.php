@@ -49,8 +49,9 @@ interface TeamworkUserInterface
      * Alias to eloquent many-to-many relation's attach() method.
      *
      * @param mixed $team
+     * @param array $pivotData
      */
-    public function attachTeam( $team );
+    public function attachTeam( $team, $pivotData = [] );
 
     /**
      * Alias to eloquent many-to-many relation's detach() method.
