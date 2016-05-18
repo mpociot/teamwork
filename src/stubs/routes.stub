@@ -15,3 +15,5 @@ Route::get('teams/members/{id}', 'Teamwork\TeamMemberController@show')->name('te
 Route::get('teams/members/resend/{invite_id}', 'Teamwork\TeamMemberController@resendInvite')->name('teams.members.resend_invite');
 Route::post('teams/members/{id}', 'Teamwork\TeamMemberController@invite')->name('teams.members.invite');
 Route::delete('teams/members/{id}/{user_id}', 'Teamwork\TeamMemberController@destroy')->name('teams.members.destroy');
+
+Route::get('accept/{token}', 'Teamwork\AuthController@acceptInvite')->name('teams.accept_invite');

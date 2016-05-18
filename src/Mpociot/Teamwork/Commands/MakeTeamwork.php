@@ -65,7 +65,23 @@ class MakeTeamwork extends Command
                 app_path('Http/Controllers/Teamwork/TeamMemberController.php'),
                 $this->compileControllerStub('TeamMemberController')
             );
-            
+
+            $this->info('Installed AuthController.');
+            file_put_contents(
+                app_path('Http/Controllers/Teamwork/AuthController.php'),
+                $this->compileControllerStub('AuthController')
+            );
+
+            $this->info('Installed JoinTeamListener');
+            file_put_contents(
+                app_path('Listeners/Teamwork/JoinTeamListener.php'),
+                str_replace(
+                    '{{namespace}}',
+                    $this->getAppNamespace(),
+                    file_get_contents(__DIR__ . '/../../../stubs/listeners/JoinTeamListener.stub')
+                )
+            );
+
             $this->info('Updated Routes File.');
             file_put_contents(
                 app_path('Http/routes.php'),
@@ -85,6 +101,9 @@ class MakeTeamwork extends Command
     {
         if (! is_dir(app_path('Http/Controllers/Teamwork'))) {
             mkdir(app_path('Http/Controllers/Teamwork'), 0755, true);
+        }
+        if (! is_dir(app_path('Listeners/Teamwork'))) {
+            mkdir(app_path('Listeners/Teamwork'), 0755, true);
         }
         if (! is_dir(base_path('resources/views/teamwork'))) {
             mkdir(base_path('resources/views/teamwork'), 0755, true);
