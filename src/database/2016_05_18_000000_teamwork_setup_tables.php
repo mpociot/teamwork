@@ -19,7 +19,7 @@ class TeamworkSetupTables extends Migration
         } );
 
 
-        Schema::create( \Config::get( 'teamwork.teams_table' ), function ( $table )
+        Schema::create( \Config::get( 'teamwork.teams_table' ), function ( Blueprint $table )
         {
             $table->increments( 'id' )->unsigned();
             $table->integer( 'owner_id' )->unsigned()->nullable();
@@ -27,7 +27,7 @@ class TeamworkSetupTables extends Migration
             $table->timestamps();
         } );
 
-        Schema::create( \Config::get( 'teamwork.team_user_table' ), function ( $table )
+        Schema::create( \Config::get( 'teamwork.team_user_table' ), function ( Blueprint $table )
         {
             $table->integer( 'user_id' )->unsigned();
             $table->integer( 'team_id' )->unsigned();
