@@ -66,9 +66,9 @@ class TeamMemberController extends Controller
         $teamModel = config('teamwork.team_model');
         $team = $teamModel::findOrFail($team_id);
 
-        if( !teamwork.hasPendingInvite( $request->email, $team) )
+        if( !Teamwork::hasPendingInvite( $request->email, $team) )
         {
-            teamwork.inviteToTeam( $request->email, $team, function( $invite )
+            Teamwork::inviteToTeam( $request->email, $team, function( $invite )
             {
                 Mail::send('teamwork.emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
                     $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
