@@ -1,362 +1,278 @@
 <?php
 
-use Illuminate\Support\Facades\Config;
-use Mockery as m;
-use Mpociot\Teamwork\Traits\UserHasTeams;
+use Mpociot\Teamwork\TeamworkTeam;
 
-class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
+class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 {
+    protected $user;
 
-    public function tearDown()
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
     {
-        Config::clearResolvedInstances();
-        m::close();
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('teamwork.user_model', 'User');
+
+        \Schema::create('users', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
-    public function testGetTeams()
+    public function setUp()
     {
-        Config::shouldReceive('get')
-            ->once()
-            ->with('teamwork.team_model')
-            ->andReturn('Team');
+        parent::setUp();
 
-        Config::shouldReceive('get')
-            ->once()
-            ->with('teamwork.team_user_table')
-            ->andReturn('team_user');
+        $this->artisan('migrate', [
+            '--database' => 'testing',
+            '--realpath' => realpath(__DIR__.'/../src/database'),
+        ]);
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[belongsToMany]' );
-        $stub->shouldReceive('belongsToMany')
-            ->once()
-            ->with('Team', 'team_user', 'user_id', 'team_id' )
-            ->andReturn( [] );
-        $this->assertEquals( [], $stub->teams() );
+        $this->user = new User();
+        $this->user->name = 'Marcel';
+        $this->user->save();
     }
 
-    public function testGetCurrentTeam()
+    protected function getPackageProviders($app)
     {
-        Config::shouldReceive('get')
-            ->once()
-            ->with('teamwork.team_model')
-            ->andReturn('Team');
+        return [\Mpociot\Teamwork\TeamworkServiceProvider::class];
+    }
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[hasOne]' );
-        $stub->shouldReceive('hasOne')
-            ->once()
-            ->with('Team', 'id', 'current_team_id'  )
-            ->andReturn( [] );
-        $this->assertEquals( [], $stub->currentTeam() );
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
+        ];
+    }
+
+    public function testNewUserHasNoTeams()
+    {
+        $user = new User();
+        $user->name = 'Marcel';
+        $user->save();
+
+        $this->assertCount(0, $user->teams);
+        $this->assertEquals(0, $user->current_team_id);
+        $this->assertNull($user->currentTeam);
+        $this->assertCount(0, $user->ownedTeams);
+        $this->assertCount(0, $user->invites);
+    }
+
+    public function testAttachingTeamSetsCurrentTeam()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+        $this->assertNull($this->user->currentTeam);
+
+        $this->user->attachTeam($team);
+
+        $this->assertEquals(1, $this->user->currentTeam->getKey());
+    }
+
+    public function testCanAttachTeamToUser()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+
+        $this->user->attachTeam($team);
+
+        // Reload relation
+        $this->assertCount(1, $this->user->teams);
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+    }
+
+    public function testCanAttachTeamAsArrayToUser()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+
+        $this->user->attachTeam($team->toArray());
+
+        // Reload relation
+        $this->assertCount(1, $this->user->teams);
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+    }
+
+    public function testCanAttachTeamAsIDToUser()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+
+        $this->user->attachTeam($team->getKey());
+
+        // Reload relation
+        $this->assertCount(1, $this->user->teams);
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+    }
+
+    public function testIsTeamOwner()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+        $this->user->attachTeam($team->getKey());
+
+        $this->assertFalse($this->user->isTeamOwner());
+        $this->assertFalse($this->user->isOwner());
+
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team', 'owner_id' => $this->user->getKey()]);
+        $this->user->attachTeam($team2->getKey());
+
+        $this->assertTrue($this->user->isTeamOwner());
+        $this->assertTrue($this->user->isOwner());
+    }
+
+    public function testIsOwnerOfTeam()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+        $this->user->attachTeam($team->getKey());
+
+        $this->assertFalse($this->user->isOwnerOfTeam($team));
+
+        $team = TeamworkTeam::create(['name' => 'Test-Team', 'owner_id' => $this->user->getKey()]);
+        $this->user->attachTeam($team->getKey());
+
+        $this->assertTrue($this->user->isOwnerOfTeam($team));
     }
 
     public function testGetOwnedTeams()
     {
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,where,getKey]' );
-        $stub->shouldReceive('teams')->andReturnSelf();
-        $stub->shouldReceive('where')
-            ->once()
-            ->with('owner_id', '=', 'getKey'  )
-            ->andReturn( [] );
-        $stub->shouldReceive('getKey')
-            ->once()
-            ->andReturn( 'getKey' );
-        $this->assertEquals( [], $stub->ownedTeams() );
+        $team = TeamworkTeam::create(['name' => 'Test-Team', 'owner_id' => $this->user->getKey()]);
+        $this->user->attachTeam($team->getKey());
+        $this->assertCount(1, $this->user->ownedTeams);
     }
 
-
-    public function testGetInvites()
+    public function testCanDetachTeam()
     {
-        Config::shouldReceive('get')
-            ->once()
-            ->with('teamwork.invite_model')
-            ->andReturn('Invite');
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[hasMany]' );
-        $stub->shouldReceive('hasMany')
-            ->once()
-            ->with('Invite', 'email', 'email'  )
-            ->andReturn( [] );
-        $this->assertEquals( [], $stub->invites() );
+        $this->user->attachTeam($team1);
+        $this->user->attachTeam($team2);
+        $this->user->attachTeam($team3);
+
+        $this->assertCount(3, $this->user->teams()->get());
+
+        $this->user->detachTeam($team2);
+        $this->assertCount(2, $this->user->teams()->get());
     }
 
-
-    public function testIsTeamOwner()
+    public function testDetachTeamResetsCurrentTeam()
     {
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[isOwner]' );
-        $stub->shouldReceive('isOwner')
-            ->once()
-            ->andReturn( false );
-        $this->assertFalse( $stub->isTeamOwner() );
+        $team = TeamworkTeam::create(['name' => 'Test-Team 1']);
+
+        $this->user->attachTeam($team);
+
+        $this->assertEquals($team->getKey(), $this->user->currentTeam->getKey());
+
+        $this->user->detachTeam($team);
+        $this->assertNull($this->user->currentTeam);
     }
 
-    public function testAttachTeams()
+    public function testCanAttachMultipleTeams()
     {
-        $teams = array(1,2,3,4,5,6,7,8);
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[attachTeam]' );
-        $stub->shouldReceive('attachTeam')
-            ->times(count($teams));
-        $stub->attachTeams($teams);
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
+
+        $this->user->attachTeams([
+            $team1,
+            $team2,
+            $team3
+        ]);
+
+        $this->assertCount(3, $this->user->teams()->get());
     }
 
-
-    public function testDetachTeams()
+    public function testCanDetachMultipleTeams()
     {
-        $teams = array(1,2,3,4,5,6,7,8);
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[detachTeam]' );
-        $stub->shouldReceive('detachTeam')
-            ->times(count($teams));
-        $stub->detachTeams($teams);
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
+
+        $this->user->attachTeams([
+            $team1,
+            $team2,
+            $team3
+        ]);
+
+        $this->assertCount(3, $this->user->teams()->get());
+
+        $this->user->detachTeams([
+            $team1,
+            $team3
+        ]);
+
+        $this->assertCount(1, $this->user->teams()->get());
     }
 
-    public function testRetrieveTeamIdReturnsInteger()
+    public function testCurrentTeamGetsResetWhenDetached()
     {
-        $stub = m::mock( 'TestUserHasTeamsTraitStub' );
-        $this->assertEquals(1, $stub->retrieveTeamId( 1 ) );
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
+
+        $this->user->attachTeams([
+            $team1,
+            $team2,
+            $team3
+        ]);
+
+        $this->assertEquals($team1->getKey(), $this->user->currentTeam->getKey());
+
+        $this->user->detachTeam($team1);
+
+        $this->assertNull($this->user->currentTeam);
     }
 
-    public function testRetrieveTeamIdReturnsArrayKey()
+    public function testUserCanSwitchTeam()
     {
-        $stub = m::mock( 'TestUserHasTeamsTraitStub' );
-        $this->assertEquals(1, $stub->retrieveTeamId( ["id" => 1] ) );
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
+
+        $this->user->attachTeams([
+            $team1,
+            $team2,
+            $team3
+        ]);
+        $this->assertEquals($team1->getKey(), $this->user->currentTeam->getKey());
+        $this->user->switchTeam($team2);
+        $this->assertEquals($team2->getKey(), $this->user->currentTeam->getKey());
     }
 
-    public function testRetrieveTeamIdReturnsObjectKey()
+    public function testUserCannotSwitchToInvalidTeam()
     {
-        $team_id = 1;
-        $team = m::mock('stdClass');
-        $team->shouldReceive('getKey')->once()->andReturn( $team_id );
-        $stub = m::mock( 'TestUserHasTeamsTraitStub' );
-        $this->assertEquals($team_id, $stub->retrieveTeamId( $team ) );
-    }
 
-    public function testIsOwner()
-    {
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,first,getKey]' );
-        $stub->shouldReceive('first')
-            ->once()
-            ->andReturn( true );
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
+        $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
 
-        $stub->shouldReceive('getKey')
-            ->once()
-            ->andReturn( "key" );
+        $this->user->attachTeams([
+            $team1,
+            $team2
+        ]);
 
-        $stub->shouldReceive('where')
-            ->once()
-            ->with( "owner_id" , "=", "key" )
-            ->andReturnSelf();
-
-        $stub->shouldReceive('teams')
-            ->andReturnSelf();
-
-        $this->assertTrue( $stub->isOwner() );
-    }
-
-
-
-    public function testAttachTeamSetsCurrentTeamId()
-    {
-        $team = 1;
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
-        $stub->teams = m::mock('stdClass');
-        $stub->teams->shouldReceive('contains')
-            ->with( $team )
-            ->andReturn( false );
-        $stub->shouldReceive('save')
-            ->once();
-
-        $stub->shouldReceive('teams')
-            ->once()
-            ->andReturnSelf();
-        $stub->shouldReceive('attach')
-            ->once()
-            ->with($team);
-
-        $stub->current_team_id = null;
-        $stub->attachTeam( $team );
-
-        $this->assertEquals( $team, $stub->current_team_id );
-    }
-
-    public function testAttachTeamDoesNotOverrideCurrentTeamId()
-    {
-        $team = 1;
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
-        $stub->teams = m::mock('stdClass');
-        $stub->teams->shouldReceive('contains')
-            ->with( $team )
-            ->andReturn( false );
-        $stub->shouldReceive('save')
-            ->never();
-
-        $stub->shouldReceive('teams')
-            ->once()
-            ->andReturnSelf();
-        $stub->shouldReceive('attach')
-            ->once()
-            ->with($team);
-
-        $stub->current_team_id = 2;
-        $stub->attachTeam( $team );
-
-        $this->assertEquals( 2, $stub->current_team_id );
-    }
-
-    public function testAttachTeamDoesNotAttachTeamIdWhenItExists()
-    {
-        $team = 1;
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
-        $stub->teams = m::mock('stdClass');
-        $stub->teams->shouldReceive('contains')
-            ->with( $team )
-            ->andReturn( true );
-        $stub->shouldReceive('save')
-            ->never();
-
-        $stub->shouldReceive('teams')
-            ->never()
-            ->andReturnSelf();
-        $stub->shouldReceive('attach')
-            ->never();
-
-        $stub->current_team_id = 2;
-        $stub->attachTeam( $team );
-
-        $this->assertEquals( 2, $stub->current_team_id );
-    }
-
-    public function testDetachTeamUnsetsCurrentTeamId()
-    {
-        $team = 1;
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,detach]' );
-        $stub->teams = [];
-
-        $stub->shouldReceive('save')
-            ->once();
-
-        $stub->shouldReceive('teams')
-            ->once()
-            ->andReturnSelf();
-        $stub->shouldReceive('detach')
-            ->once()
-            ->with($team);
-
-        $stub->current_team_id = 1;
-        $stub->detachTeam( $team );
-
-        $this->assertNull( $stub->current_team_id );
-    }
-
-    public function testDetachTeamDoesNotUnsetsCurrentTeamIdWhenSet()
-    {
-        $team = 1;
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,detach]' );
-        $stub->teams = [2];
-
-        $stub->shouldReceive('save')
-            ->never();
-
-        $stub->shouldReceive('teams')
-            ->once()
-            ->andReturnSelf();
-        $stub->shouldReceive('detach')
-            ->once()
-            ->with($team);
-
-        $stub->current_team_id = 1;
-        $stub->detachTeam( $team );
-
-        $this->assertNotNull( $stub->current_team_id );
-    }
-
-    public function testSwitchTeamToNull()
-    {
-        Config::shouldReceive('get')
-            ->never();
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[save]' );
-        $stub->shouldReceive('save')
-            ->once();
-        $stub->current_team_id = 1;
-        $stub->switchTeam( 0 );
-        $this->assertEquals( 0, $stub->current_team_id );
-    }
-
-    public function testSwitchTeamToNullWithNull()
-    {
-        Config::shouldReceive('get')
-            ->never();
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[save]' );
-        $stub->shouldReceive('save')
-            ->once();
-        $stub->current_team_id = 1;
-        $stub->switchTeam( null );
-        $this->assertNull( $stub->current_team_id );
-    }
-
-    public function testSwitchTeamFails()
-    {
-        $team = 1;
-
-        Config::shouldReceive('get')
-            ->once()
-            ->with( 'teamwork.team_model' )
-            ->andReturn( 'TestTeamworkTeamModelStub' );
-
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[save]' );
-        $stub->shouldReceive('save')
-            ->never();
-        $stub->current_team_id = null;
-        $this->setExpectedException('Illuminate\Database\Eloquent\ModelNotFoundException');
-        $stub->switchTeam( $team );
-    }
-
-    public function testSwitchTeamUserNotInTeam()
-    {
-        $team = 1;
-
-        Config::shouldReceive('get')
-            ->once()
-            ->with( 'teamwork.team_model' )
-            ->andReturn( 'TestTeamworkTeamModelNotInTeamStub' );
-
-
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[save,getKey]' );
-        $stub->shouldReceive('getKey')
-            ->once()
-            ->andReturn( 5 );
-
-        $stub->shouldReceive('save')
-            ->never();
         $this->setExpectedException('Mpociot\Teamwork\Exceptions\UserNotInTeamException',
-            'The user is not in the team Test Team');
-        $stub->switchTeam( $team );
+            'The user is not in the team Test-Team 3');
+        $this->user->switchTeam($team3);
     }
 
+    public function testUserCannotSwitchToNotExistingTeam()
+    {
 
-}
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
 
-class TestTeamworkTeamModelStub {
-    public function find(){}
-}
-class TestTeamworkTeamModelNotInTeamStub {
+        $this->user->attachTeams([
+            $team1,
+            $team2
+        ]);
 
-    public function find(){
-        $mock = m::mock('stdClass');
-        $mock->name = "Test Team";
-        $mock->users = m::mock('stdClass');
-        $mock->users->shouldReceive('contains')
-            ->once()
-            ->with( 5 )
-            ->andReturn( false );
-        return $mock;
+        $this->setExpectedException('Illuminate\Database\Eloquent\ModelNotFoundException');
+        $this->user->switchTeam(3);
     }
-}
 
-class TestUserHasTeamsTraitStub extends Illuminate\Database\Eloquent\Model {
-
-    use UserHasTeams;
 }
