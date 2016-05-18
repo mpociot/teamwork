@@ -156,7 +156,7 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
     {
         $team = 1;
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
+        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach,load]' );
         $stub->teams = m::mock('stdClass');
         $stub->teams->shouldReceive('contains')
             ->with( $team )
@@ -167,6 +167,11 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
         $stub->shouldReceive('teams')
             ->once()
             ->andReturnSelf();
+
+        $stub->shouldReceive('load')
+            ->once()
+            ->with('teams');
+
         $stub->shouldReceive('attach')
             ->once()
             ->with($team);
@@ -181,7 +186,7 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
     {
         $team = 1;
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
+        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach,load]' );
         $stub->teams = m::mock('stdClass');
         $stub->teams->shouldReceive('contains')
             ->with( $team )
@@ -192,6 +197,11 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
         $stub->shouldReceive('teams')
             ->once()
             ->andReturnSelf();
+
+        $stub->shouldReceive('load')
+            ->once()
+            ->with('teams');
+
         $stub->shouldReceive('attach')
             ->once()
             ->with($team);
@@ -206,7 +216,7 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
     {
         $team = 1;
 
-        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach]' );
+        $stub = m::mock( 'TestUserHasTeamsTraitStub[teams,save,attach,load]' );
         $stub->teams = m::mock('stdClass');
         $stub->teams->shouldReceive('contains')
             ->with( $team )
@@ -217,6 +227,11 @@ class UserHasTeamsTraitTest extends PHPUnit_Framework_TestCase
         $stub->shouldReceive('teams')
             ->never()
             ->andReturnSelf();
+
+        $stub->shouldReceive('load')
+            ->once()
+            ->with('teams');
+
         $stub->shouldReceive('attach')
             ->never();
 

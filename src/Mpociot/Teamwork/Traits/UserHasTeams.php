@@ -144,6 +144,10 @@ trait UserHasTeams
             $this->current_team_id = $team;
             $this->save();
         }
+        
+        // Reload relation
+        $this->load('teams');
+
         if( !$this->teams->contains( $team ) )
         {
             $this->teams()->attach( $team );
