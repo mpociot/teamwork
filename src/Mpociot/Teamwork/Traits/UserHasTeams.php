@@ -21,7 +21,7 @@ trait UserHasTeams
      */
     public function teams()
     {
-        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' );
+        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' )->withTimestamps();
     }
 
     /**
@@ -143,6 +143,11 @@ trait UserHasTeams
         {
             $this->current_team_id = $team;
             $this->save();
+
+            if( $this->relationLoaded('currentTeam') ) {
+                $this->load('currentTeam');
+            }
+
         }
         
         // Reload relation
@@ -151,6 +156,10 @@ trait UserHasTeams
         if( !$this->teams->contains( $team ) )
         {
             $this->teams()->attach( $team );
+
+            if( $this->relationLoaded('teams') ) {
+                $this->load('teams');
+            }
         }
         return $this;
     }
@@ -165,14 +174,24 @@ trait UserHasTeams
     {
         $team        = $this->retrieveTeamId( $team );
         $this->teams()->detach( $team );
+
+        if( $this->relationLoaded('teams') ) {
+            $this->load('teams');
+        }
+        
         /**
          * If the user has no more teams,
          * unset the current_team_id
          */
-        if( count( $this->teams ) === 0 )
+        if( $this->teams()->count() === 0 || $this->current_team_id === $team )
         {
             $this->current_team_id = null;
             $this->save();
+
+            if( $this->relationLoaded('currentTeam') ) {
+                $this->load('currentTeam');
+            }
+
         }
         return $this;
     }
@@ -237,6 +256,11 @@ trait UserHasTeams
         }
         $this->current_team_id = $team;
         $this->save();
+
+        if( $this->relationLoaded('currentTeam') ) {
+            $this->load('currentTeam');
+        }
+        
         return $this;
     }
 }

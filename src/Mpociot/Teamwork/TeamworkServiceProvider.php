@@ -8,6 +8,7 @@
  */
 
 use Illuminate\Support\ServiceProvider;
+use Mpociot\Teamwork\Commands\MakeTeamwork;
 
 class TeamworkServiceProvider extends ServiceProvider
 {
@@ -49,7 +50,7 @@ class TeamworkServiceProvider extends ServiceProvider
         if( count( $published_migration ) === 0 )
         {
             $this->publishes( [
-                __DIR__ . '/../../database/migrations.stub' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
+                __DIR__ . '/../../database/2016_05_18_000000_teamwork_setup_tables.php' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
             ], 'migrations' );
         }
     }
@@ -64,6 +65,7 @@ class TeamworkServiceProvider extends ServiceProvider
         $this->mergeConfig();
         $this->registerTeamwork();
         $this->registerFacade();
+        $this->registerCommands();
     }
 
     /**
@@ -100,5 +102,19 @@ class TeamworkServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/config.php', 'teamwork'
         );
+    }
+
+    /**
+     * Register scaffolding command
+     */
+    protected function registerCommands()
+    {
+        $this->app['make.teamwork'] = $this->app->share(function () {
+            return new MakeTeamwork();
+        });
+
+        $this->commands([
+            'make.teamwork'
+        ]);
     }
 }

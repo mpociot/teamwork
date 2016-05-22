@@ -1,0 +1,19 @@
+
+
+/**
+ * Teamwork routes
+ */
+Route::get('teams', 'Teamwork\TeamController@index')->name('teams.index');
+Route::get('teams/create', 'Teamwork\TeamController@create')->name('teams.create');
+Route::post('teams', 'Teamwork\TeamController@store')->name('teams.store');
+Route::get('edit/{id}', 'Teamwork\TeamController@edit')->name('teams.edit');
+Route::put('edit/{id}', 'Teamwork\TeamController@update')->name('teams.update');
+Route::delete('destroy/{id}', 'Teamwork\TeamController@destroy')->name('teams.destroy');
+Route::get('teams/switch/{id}', 'Teamwork\TeamController@switchTeam')->name('teams.switch');
+
+Route::get('teams/members/{id}', 'Teamwork\TeamMemberController@show')->name('teams.members.show');
+Route::get('teams/members/resend/{invite_id}', 'Teamwork\TeamMemberController@resendInvite')->name('teams.members.resend_invite');
+Route::post('teams/members/{id}', 'Teamwork\TeamMemberController@invite')->name('teams.members.invite');
+Route::delete('teams/members/{id}/{user_id}', 'Teamwork\TeamMemberController@destroy')->name('teams.members.destroy');
+
+Route::get('accept/{token}', 'Teamwork\AuthController@acceptInvite')->name('teams.accept_invite');

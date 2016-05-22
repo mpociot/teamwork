@@ -17,6 +17,11 @@ class TeamworkTeam extends Model
     protected $table;
 
     /**
+     * @var array
+     */
+    protected $fillable = ['name', 'owner_id'];
+
+    /**
      * Creates a new instance of the model.
      *
      * @param array $attributes
