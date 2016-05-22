@@ -20,6 +20,7 @@ Teamwork is the fastest and easiest method to add a User / Team association with
         - [Team](#team)
         - [User](#user)
 - [Usage](#usage)
+    - [Scaffoling](#scaffolding)
     - [Basic concepts](#basic-concepts)
     - [Get to know my team(s)](#know-my-teams)
     - [Team owner](#team-owner)
@@ -138,6 +139,27 @@ composer dump-autoload
 
 <a name="usage" />
 ## Usage
+
+<a name="scaffolding" />
+### Scaffolding
+
+The easiest way to give your new Laravel project Team abilities is by using the `make:teamwork` command.
+
+```bash
+php artisan make:teamwork
+```
+
+This command will create all views, routes and controllers to make your new project team-ready. 
+
+Out of the box, the following parts will be created for you:
+
+* Team listing
+* Team creation / editing / deletion
+* Invite new members to teams
+
+Imagine it as a the `make:auth` command for Teamwork.
+
+To get started, take a look at the new installed `/teams` route in your project.
 
 <a name="basic-concepts" />
 ### Basic concepts
