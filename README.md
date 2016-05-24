@@ -46,12 +46,12 @@ Add the version you need to your composer.json. Then run `composer install` or `
 
 (or run `composer require mpociot/teamwork` if you prefere that)
 
-Then in your `config/app.php` add 
+Then in your `config/app.php` add
 
     Mpociot\Teamwork\TeamworkServiceProvider::class
-    
+
 in the `providers` array.
-    
+
 The `Teamwork` Facade will be installed automatically within the Service Provider.
 
 <a name="configuration"/>
@@ -76,19 +76,19 @@ Run the `migration` command, to generate all tables needed for Teamwork.
 ```bash
 php artisan migrate
 ```
-    
+
 After the migration, 3 new tables will be created:
 
 - teams &mdash; stores team records
 - team_user &mdash; stores [many-to-many](http://laravel.com/docs/5.1/eloquent-relationships#many-to-many) relations between users and teams
 - team_invites &mdash; stores pending invites for email addresses to teams
 
-You will also notice that a new column `current_team_id` has been added to your users table. 
+You will also notice that a new column `current_team_id` has been added to your users table.
 This column will define the Team, the user is currently assigned to.
 
 <a name="models" />
 ### Models
-    
+
 <a name="team" />
 #### Team
 
@@ -127,7 +127,7 @@ class User extends Model {
 }
 ```
 
-This will enable the relation with `Team` and add the following methods `teams()`, `ownedTeams()` `currentTeam()`, `invites()`, `isTeamOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team)`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
+This will enable the relation with `Team` and add the following methods `teams()`, `ownedTeams()` `currentTeam()`, `invites()`, `isTeamOwner()`, `isOwnerOfTeam($team)`, `attachTeam($team, $pivotData = [])`, `detachTeam($team)`, `attachTeams($teams)`, `detachTeams($teams)`, `switchTeam($team)` within your `User` model.
 
 Don't forget to dump composer autoload
 
@@ -149,7 +149,7 @@ The easiest way to give your new Laravel project Team abilities is by using the 
 php artisan make:teamwork
 ```
 
-This command will create all views, routes and controllers to make your new project team-ready. 
+This command will create all views, routes and controllers to make your new project team-ready.
 
 Out of the box, the following parts will be created for you:
 
@@ -184,13 +184,13 @@ Now thanks to the `UserHasTeams` trait, assigning the Teams to the user is uber 
 $user = User::where('username', '=', 'sebastian')->first();
 
 // team attach alias
-$user->attachTeam($team); // parameter can be a Team object, array, or id
+$user->attachTeam($team, $pivotData); // First parameter can be a Team object, array, or id
 
 // or eloquent's original technique
 $user->teams()->attach($team->id); // id only
 ```
 
-By using the `attachTeam` method, if the User has no Teams assigned, the `current_team_id` column will automatically be set. 
+By using the `attachTeam` method, if the User has no Teams assigned, the `current_team_id` column will automatically be set.
 
 <a name="know-my-teams" />
 ### Get to know my team(s)
@@ -243,7 +243,7 @@ The `isOwnerOfTeam` method also allows an array or id as team parameter.
 <a name="switching-the-current-team" />
 ### Switching the current team
 
-If your Users are members of multiple teams you might want to give them access to a `switch team` mechanic in some way. 
+If your Users are members of multiple teams you might want to give them access to a `switch team` mechanic in some way.
 
 This means that the user has one "active" team, that is currently assigned to the user. All other teams still remain attached to the relation!
 
@@ -353,10 +353,10 @@ if( $invite ) // valid token found
 ```
 
 The `denyInvite` method is only responsible for deleting the invitation from the database.
-    
+
 <a name="license" />
 ## License
 
 Teamwork is free software distributed under the terms of the MIT license.
 
-'Marvel Avengers' image licensed under [Creative Commons 2.0](https://creativecommons.org/licenses/by/2.0/) - Photo from [W_Minshull](https://www.flickr.com/photos/23950335@N07/8251484285/in/photostream/) 
+'Marvel Avengers' image licensed under [Creative Commons 2.0](https://creativecommons.org/licenses/by/2.0/) - Photo from [W_Minshull](https://www.flickr.com/photos/23950335@N07/8251484285/in/photostream/)
