@@ -130,9 +130,10 @@ trait UserHasTeams
      * Alias to eloquent many-to-many relation's attach() method.
      *
      * @param mixed $team
+     * @param array $pivotData
      * @return $this
      */
-    public function attachTeam( $team )
+    public function attachTeam( $team, $pivotData = [] )
     {
         $team        = $this->retrieveTeamId( $team );
         /**
@@ -155,7 +156,7 @@ trait UserHasTeams
 
         if( !$this->teams->contains( $team ) )
         {
-            $this->teams()->attach( $team );
+            $this->teams()->attach( $team, $pivotData );
 
             if( $this->relationLoaded('teams') ) {
                 $this->load('teams');

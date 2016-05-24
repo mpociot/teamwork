@@ -108,6 +108,24 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
         $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
     }
 
+    public function testCanSetPivotDataOnAttachTeamMethod()
+    {
+        \Schema::table(config( 'teamwork.team_user_table' ), function ($table) {
+            $table->boolean('pivot_set')->default(false);
+        });
+
+        $team = TeamworkTeam::create(['name' => 'Test-Team']);
+        $pivotData = ['pivot_set' => true];
+
+        $this->user->attachTeam($team, $pivotData);
+
+        $this->seeInDatabase(config('teamwork.team_user_table'), [
+            'user_id' => $this->user->getKey(),
+            'team_id' => $team->getKey(),
+            'pivot_set' => true
+        ]);
+    }
+
     public function testIsTeamOwner()
     {
         $team = TeamworkTeam::create(['name' => 'Test-Team']);
