@@ -80,8 +80,8 @@ class TeamworkSetupTables extends Migration
         });
 
         Schema::drop(\Config::get('teamwork.team_user_table'));
-        Schema::drop(\Config::get('teamwork.teams_table'));
         Schema::drop(\Config::get('teamwork.team_invites_table'));
+        Schema::drop(\Config::get('teamwork.teams_table'));
 
     }
 }
