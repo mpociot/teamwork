@@ -28,6 +28,7 @@ Teamwork is the fastest and easiest method to add a User / Team association with
     - [Inviting others](#inviting-others)
     - [Accepting invites](#accepting-invites)
     - [Denying invites](#denying-invites)
+    - [Limit Models to current Team](#scope)
 - [License](#license)
 
 <a name="installation" />
@@ -353,6 +354,43 @@ if( $invite ) // valid token found
 ```
 
 The `denyInvite` method is only responsible for deleting the invitation from the database.
+
+<a name="scope" />
+### Limit Models to current Team
+
+If your models are somehow limited to the current team you will find yourself writing this query over and over again: `Model::where('team_id', auth()->user()->currentTeam->id)->get();`.
+
+To automate this process, you can let your models use the `UsedByTeams` trait. This trait will automatically append the current team id of the authenticated user to all queries and will also add it to a field called `team_id` when saving the models.
+
+**Note:**
+> This assumes that the model has a field called `team_id`
+
+
+#### Usage
+
+
+```php
+use Mpociot\Teamwork\Traits\UsedByTeams;
+
+class Task extends Model
+{
+    use UsedByTeams;
+}
+```
+
+When using this trait, all queries will append `WHERE team_id=CURRENT_TEAM_ID`. 
+If theres a place in your app, where you really want to retrieve all models, no matter what team they belong to, you can use the `allTeams` scope.
+
+**Example:**
+
+```php
+// gets all teams for the currently active team of the authenticated user
+Task::all();
+
+// gets all tasks from all teams globally
+Task::allTeams()->get();
+```
+
 
 <a name="license" />
 ## License
