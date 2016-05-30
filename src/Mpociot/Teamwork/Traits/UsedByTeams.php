@@ -41,10 +41,10 @@ trait UsedByTeams
     }
 
     /**
-     * @param $query
+     * @param Builder $query
      * @return mixed
      */
-    public function scopeAllTeams($query)
+    public function scopeAllTeams(Builder $query)
     {
         return $query->withoutGlobalScope('team');
     }
