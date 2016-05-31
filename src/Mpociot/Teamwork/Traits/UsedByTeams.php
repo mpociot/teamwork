@@ -21,10 +21,8 @@ trait UsedByTeams
     /**
      * Boot the global scope
      */
-    protected static function boot()
+    protected static function bootUsedByTeams()
     {
-        parent::boot();
-
         static::addGlobalScope('team', function (Builder $builder) {
             static::teamGuard();
 
