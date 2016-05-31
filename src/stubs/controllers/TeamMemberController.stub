@@ -80,6 +80,8 @@ class TeamMemberController extends Controller
                 'email' => 'The email address is already invited to the team.'
             ]);
         }
+        
+        return redirect(route('teams.members.show', $team->id));
     }
 
     /**
