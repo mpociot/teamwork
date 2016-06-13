@@ -189,6 +189,24 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
         $this->assertNull($this->user->currentTeam);
     }
 
+    public function testAttachTeamFiresEvent()
+    {
+        $this->expectsEvents(\Mpociot\Teamwork\Events\UserJoinedTeam::class);
+        $this->doesntExpectEvents(\Mpociot\Teamwork\Events\UserLeftTeam::class);
+
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $this->user->attachTeam($team1);
+    }
+
+    public function testDetachTeamFiresEvent()
+    {
+        $this->expectsEvents(\Mpociot\Teamwork\Events\UserLeftTeam::class);
+
+        $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $this->user->attachTeam($team1);
+        $this->user->detachTeam($team1);
+    }
+
     public function testCanAttachMultipleTeams()
     {
         $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
