@@ -28,6 +28,7 @@ Teamwork is the fastest and easiest method to add a User / Team association with
     - [Inviting others](#inviting-others)
     - [Accepting invites](#accepting-invites)
     - [Denying invites](#denying-invites)
+    - [Attach/Detach Events](#events)
     - [Limit Models to current Team](#scope)
 - [License](#license)
 
@@ -354,6 +355,73 @@ if( $invite ) // valid token found
 ```
 
 The `denyInvite` method is only responsible for deleting the invitation from the database.
+
+<a name="events" />
+### Attaching/Detaching Events
+
+If you need to run additional processes after attaching or detaching a team from a user, you can Listen for these events:
+
+```php
+\Mpociot\Teamwork\Events\UserJoinedTeam
+
+\Mpociot\Teamwork\Events\UserLeftTeam
+```
+
+In your `EventServiceProvider` add your listener(s):
+
+```php
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    ...
+    \Mpociot\Teamwork\Events\UserJoinedTeam::class => [
+        App\Listeners\YourJoinedTeamListener::class,
+    ],
+    \Mpociot\Teamwork\Events\UserLeftTeam::class => [
+        App\Listeners\YourLeftTeamListener::class,
+    ],
+];
+```
+
+Each event exposes the User and Team's ID. In your listener, you can access them like so:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use Mpociot\Teamwork\Events\UserJoinedTeam;
+
+class YourJoinedTeamListener
+{
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  UserJoinedTeam  $event
+     * @return void
+     */
+    public function handle(UserJoinedTeam $event)
+    {
+        // $user = $event->getUser();
+        // $teamId = $event->getTeamId();
+        
+        // Do something with the user and team ID.
+    }
+}
+```
 
 <a name="scope" />
 ### Limit Models to current Team

@@ -10,6 +10,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
+use Mpociot\Teamwork\Events\UserJoinedTeam;
+use Mpociot\Teamwork\Events\UserLeftTeam;
 use Mpociot\Teamwork\Exceptions\UserNotInTeamException;
 
 trait UserHasTeams
@@ -158,6 +160,8 @@ trait UserHasTeams
         {
             $this->teams()->attach( $team, $pivotData );
 
+            event(new UserJoinedTeam($this, $team));
+
             if( $this->relationLoaded('teams') ) {
                 $this->load('teams');
             }
@@ -175,6 +179,8 @@ trait UserHasTeams
     {
         $team        = $this->retrieveTeamId( $team );
         $this->teams()->detach( $team );
+
+        event(new UserLeftTeam($this, $team));
 
         if( $this->relationLoaded('teams') ) {
             $this->load('teams');
