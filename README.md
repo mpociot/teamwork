@@ -113,6 +113,8 @@ The `Team` model has two main attributes:
 
 The `owner_id` is an optional attribute and is nullable in the database.
 
+When extending TeamworkTeam, remember to change the `team_model` variable in `config/teamwork.php` to your new model. For instance: `'team_model' => App\Team::class`
+
 <a name="user" />
 #### User
 
