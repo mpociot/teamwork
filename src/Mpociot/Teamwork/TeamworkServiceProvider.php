@@ -47,15 +47,6 @@ class TeamworkServiceProvider extends ServiceProvider
     protected function publishMigration()
     {
         $this->loadMigrationsFrom(__DIR__.'/../../database');
-        /**
-        $published_migration = glob( database_path( '/migrations/*_teamwork_setup_tables.php' ) );
-        if( count( $published_migration ) === 0 )
-        {
-            $this->publishes( [
-                __DIR__ . '/../../database/2016_05_18_000000_teamwork_setup_tables.php' => database_path( '/migrations/' . date( 'Y_m_d_His' ) . '_teamwork_setup_tables.php' ),
-            ], 'migrations' );
-        }
-        */
     }
 
     /**
