@@ -16,7 +16,7 @@ return [
     | This is the Auth model used by Teamwork.
     |
     */
-    'user_model' => App\User::class,
+    'user_model' => config('auth.providers.users.model', App\User::class),
 
     /*
     |--------------------------------------------------------------------------
