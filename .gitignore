@@ -9,3 +9,4 @@ phpunit.phar
 /.settings
 .env.*.php
 .env.php
+bin
