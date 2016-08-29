@@ -32,6 +32,6 @@ class UserInvitedToTeam
      */
     public function getTeamId()
     {
-        return $this->team_id;
+        return $this->invite->team_id;
     }
 }
