@@ -263,7 +263,13 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             'team_id' => $team->getKey()
         ]);
     }
-
+    
+    public function testInviteToTeamFiresEvent()
+    {
+        $team = TeamworkTeam::create(['name' => 'Test-Team 1']);
+        $invite = $this->createInvite($team);
+        $this->expectsEvents(\Mpociot\Teamwork\Events\UserInvitedToTeam::class);
+    }
 
 }
 

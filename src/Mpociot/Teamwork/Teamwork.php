@@ -1,6 +1,7 @@
 <?php namespace Mpociot\Teamwork;
 
 use Illuminate\Support\Facades\Config;
+use Mpociot\Teamwork\Events\UserInvitedToTeam;
 
 /**
  * This file is part of Teamwork
@@ -80,6 +81,7 @@ class Teamwork
 
         if ( !is_null( $success ) )
         {
+            event(new UserInvitedToTeam($invite));
             return $success( $invite );
         }
     }
