@@ -26,7 +26,7 @@ trait UsedByTeams
         static::addGlobalScope('team', function (Builder $builder) {
             static::teamGuard();
 
-            $builder->where('team_id', auth()->user()->currentTeam->getKey());
+            $builder->where($builder->getQuery()->from . '.team_id', auth()->user()->currentTeam->getKey());
         });
 
         static::saving(function (Model $model) {
