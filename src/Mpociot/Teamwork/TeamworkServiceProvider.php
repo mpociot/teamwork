@@ -46,7 +46,13 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     protected function publishMigration()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../../database');
+        if (! class_exists('TeamworkSetupTables')) {
+            // Publish the migration
+            $timestamp = date('Y_m_d_His', time());
+            $this->publishes([
+                __DIR__.'/../../database/migrations/2016_05_18_000000_teamwork_setup_tables.php' => database_path('migrations/'.$timestamp.'_teamwork_setup_tables.php'),
+              ], 'migrations');
+        }
     }
 
     /**
