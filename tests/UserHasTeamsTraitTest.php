@@ -81,9 +81,12 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 
         $this->user->attachTeam($team);
 
+        $currentTeam = $this->user->currentTeam;
+        unset($currentTeam->pivot);
+
         // Reload relation
         $this->assertCount(1, $this->user->teams);
-        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $currentTeam->toArray());
     }
 
     public function testCanAttachTeamAsArrayToUser()
@@ -92,9 +95,12 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 
         $this->user->attachTeam($team->toArray());
 
+        $currentTeam = $this->user->currentTeam;
+        unset($currentTeam->pivot);
+
         // Reload relation
         $this->assertCount(1, $this->user->teams);
-        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $currentTeam->toArray());
     }
 
     public function testCanAttachTeamAsIDToUser()
@@ -103,9 +109,12 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 
         $this->user->attachTeam($team->getKey());
 
+        $currentTeam = $this->user->currentTeam;
+        unset($currentTeam->pivot);
+
         // Reload relation
         $this->assertCount(1, $this->user->teams);
-        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $this->user->currentTeam->toArray());
+        $this->assertEquals(TeamworkTeam::find(1)->toArray(), $currentTeam->toArray());
     }
 
     public function testCanSetPivotDataOnAttachTeamMethod()
