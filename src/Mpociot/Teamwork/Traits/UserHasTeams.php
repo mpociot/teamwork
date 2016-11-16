@@ -27,13 +27,23 @@ trait UserHasTeams
     }
 
     /**
-     * has-one relation with the current selected team model.
+     * Accessor for the currentTeam method.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return Mpociot\Teamwork\TeamworkTeam
+     */
+    public function getCurrentTeamAttribute()
+    {
+        return $this->currentTeam();
+    }
+
+    /**
+     * Get the team that user is currently viewing.
+     *
+     * @return Many Mpociot\Teamwork\TeamworkTeam
      */
     public function currentTeam()
     {
-        return $this->hasOne( Config::get( 'teamwork.team_model' ), 'id', 'current_team_id' );
+        return $this->teams->find($this->current_team_id);
     }
 
     /**
