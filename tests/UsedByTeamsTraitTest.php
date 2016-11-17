@@ -43,7 +43,7 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
 
         $this->artisan('migrate', [
             '--database' => 'testing',
-            '--realpath' => realpath(__DIR__.'/../src/database'),
+            '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
         ]);
 
         $this->user = new User();
