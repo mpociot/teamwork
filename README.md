@@ -143,6 +143,31 @@ Don't forget to dump composer autoload
 composer dump-autoload
 ```
 
+<a name="middleware">
+### Middleware
+
+If you would like to use the middleware to protect to current team owner then just add the middleware provider to your `app\Http\Kernel.php` file.
+
+```php
+    protected $routeMiddleware = [
+        ...
+        'teamowner' => \Mpociot\Teamwork\Middleware\TeamOwner::class,
+        ...
+    ];
+```
+
+Afterwards you can use the `teamowner` middleware in your routes file like so.
+
+```php
+Route::get('/owner', function(){
+    return "Owner of current team.";
+})->middleware('auth', 'teamowner');
+```
+
+Now only if the authenticated user is the owner of the current team can access that route.
+
+> This middleware is aimed to protect routes where only the owner of the team can edit/create/delete that model
+
 **And you are ready to go.**
 
 <a name="usage" />
