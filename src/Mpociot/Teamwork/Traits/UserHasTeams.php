@@ -122,7 +122,7 @@ trait UserHasTeams
         $team_id        = $this->retrieveTeamId( $team );
         return ( $this->teams()
             ->where('owner_id', $this->getKey())
-            ->where('team_id', $team_id)
+            ->where('team_id', $team_id)->first()
         ) ? true : false;
     }
 
