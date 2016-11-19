@@ -123,7 +123,7 @@ trait UserHasTeams
         return ( $this->teams()
             ->where('owner_id', $this->getKey())
             ->where('team_id', $team_id)
-        );
+        ) ? true : false;
     }
 
     /**
