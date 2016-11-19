@@ -120,10 +120,9 @@ trait UserHasTeams
     public function isOwnerOfTeam( $team )
     {
         $team_id        = $this->retrieveTeamId( $team );
-        return ( $this->teams()
-            ->where('owner_id', $this->getKey())
-            ->where('team_id', $team_id)->first()
-        ) ? true : false;
+        return $this->ownedTeams
+            ->where('id', $team_id)
+            ->first() ? true : false;
     }
 
     /**
