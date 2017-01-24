@@ -8,7 +8,6 @@
  */
 
 use Illuminate\Support\ServiceProvider;
-use Mpociot\Teamwork\Commands\MakeTeamwork;
 
 class TeamworkServiceProvider extends ServiceProvider
 {
@@ -109,12 +108,10 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        $this->app['make.teamwork'] = $this->app->share(function () {
-            return new MakeTeamwork();
-        });
-
-        $this->commands([
-            'make.teamwork'
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\MakeTeamwork::class,
+            ]);
+        }
     }
 }
