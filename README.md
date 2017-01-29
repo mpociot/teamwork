@@ -1,5 +1,3 @@
-<img src="http://www.titaniumcontrols.com/git/teamwork.jpg" style="width: 100%" alt="Teamwork" />
-
 # Teamwork (Laravel 5 Package)
 
 [![Latest Version](https://img.shields.io/packagist/v/mpociot/teamwork.svg)](https://github.com/mpociot/teamwork/releases)
