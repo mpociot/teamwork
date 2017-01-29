@@ -35,6 +35,10 @@ Teamwork is the fastest and easiest method to add a User / Team association with
 <a name="installation" />
 ## Installation
 
+## For Laravel 5.4
+
+    "mpociot/teamwork": "~5.0"
+
 ## For Laravel 5.3
 
     "mpociot/teamwork": "~4.0"
