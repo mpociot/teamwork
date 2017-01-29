@@ -123,7 +123,7 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
         $task->name = 'Buy milk';
         $task->save();
 
-        $this->seeInDatabase('tasks', [
+        $this->assertDatabaseHas('tasks', [
             'name' => 'Buy milk',
             'team_id' => $this->user->currentTeam->getKey()
         ]);

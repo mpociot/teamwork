@@ -1,5 +1,6 @@
 <?php
 
+use Event;
 use Mpociot\Teamwork\TeamworkTeam;
 
 class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
@@ -119,7 +120,7 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 
         $this->user->attachTeam($team, $pivotData);
 
-        $this->seeInDatabase(config('teamwork.team_user_table'), [
+        $this->assertDatabaseHas(config('teamwork.team_user_table'), [
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey(),
             'pivot_set' => true
@@ -191,20 +192,28 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
 
     public function testAttachTeamFiresEvent()
     {
-        $this->expectsEvents(\Mpociot\Teamwork\Events\UserJoinedTeam::class);
-        $this->doesntExpectEvents(\Mpociot\Teamwork\Events\UserLeftTeam::class);
+        Event::fake();
 
         $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
         $this->user->attachTeam($team1);
+
+        Event::assertDispatched(\Mpociot\Teamwork\Events\UserJoinedTeam::class, function ($e) use ($team1) {
+            return $e->getTeamId() === $team1->id && $e->getUser()->id === $this->user->id;
+        });
+        Event::assertNotDispatched(\Mpociot\Teamwork\Events\UserLeftTeam::class);
     }
 
     public function testDetachTeamFiresEvent()
     {
-        $this->expectsEvents(\Mpociot\Teamwork\Events\UserLeftTeam::class);
+        Event::fake();
 
         $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
         $this->user->attachTeam($team1);
         $this->user->detachTeam($team1);
+
+        Event::assertDispatched(\Mpociot\Teamwork\Events\UserLeftTeam::class, function ($e) use ($team1) {
+            return $e->getTeamId() === $team1->id && $e->getUser()->id === $this->user->id;
+        });
     }
 
     public function testCanAttachMultipleTeams()
