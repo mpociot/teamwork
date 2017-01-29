@@ -166,7 +166,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             ->with( m::type(TeamInvite::class) )->andReturn();
         \Teamwork::inviteToTeam( $email, $team->getKey(), array($callback,'callback') );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey()
@@ -185,7 +185,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             ->with( m::type(TeamInvite::class) )->andReturn();
         \Teamwork::inviteToTeam( $email, $team, array($callback,'callback') );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey()
@@ -204,7 +204,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             ->with( m::type(TeamInvite::class) )->andReturn();
         \Teamwork::inviteToTeam( $email, $team->toArray(), array($callback,'callback') );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey()
@@ -222,7 +222,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             ->with( m::type(TeamInvite::class) )->andReturn();
         \Teamwork::inviteToTeam( $this->user, $team->toArray(), array($callback,'callback') );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey()
@@ -242,7 +242,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
             ->with( m::type(TeamInvite::class) )->andReturn();
         \Teamwork::inviteToTeam( $email, null, array($callback,'callback') );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'team_id' => $team->getKey()
         ]);
@@ -258,7 +258,7 @@ class TeamworkTest extends Orchestra\Testbench\TestCase
 
         \Teamwork::inviteToTeam( $email );
 
-        $this->seeInDatabase(config('teamwork.team_invites_table'),[
+        $this->assertDatabaseHas(config('teamwork.team_invites_table'),[
             'email' => 'asd@fake.com',
             'team_id' => $team->getKey()
         ]);
