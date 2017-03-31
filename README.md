@@ -56,13 +56,14 @@ Add the version you need to your composer.json. Then run `composer install` or `
 
 Then in your `config/app.php` add
 
-    Mpociot\Teamwork\TeamworkServiceProvider::class
+    Mpociot\Teamwork\TeamworkServiceProvider::class,
 
 in the `providers` array.
 
 The `Teamwork` Facade will be installed automatically within the Service Provider.
 
 <a name="configuration"/>
+
 ## Configuration
 
 To publish Teamwork's configuration and migration files, run the `vendor:publish` command.
@@ -75,6 +76,7 @@ This will create a `teamwork.php` in your config directory.
 The default configuration should work just fine for you, but you can take a look at it, if you want to customize the table / model names Teamwork will use.
 
 <a name="user-relation-to-team" />
+
 ### User relation to teams
 
 Run the `migration` command, to generate all tables needed for Teamwork.
@@ -95,9 +97,11 @@ You will also notice that a new column `current_team_id` has been added to your 
 This column will define the Team, the user is currently assigned to.
 
 <a name="models" />
+
 ### Models
 
 <a name="team" />
+
 #### Team
 
 Create a Team model inside `app/Team.php` using the following example:
@@ -122,6 +126,7 @@ The `owner_id` is an optional attribute and is nullable in the database.
 When extending TeamworkTeam, remember to change the `team_model` variable in `config/teamwork.php` to your new model. For instance: `'team_model' => App\Team::class`
 
 <a name="user" />
+
 #### User
 
 Add the `UserHasTeams` trait to your existing User model:
@@ -146,6 +151,7 @@ composer dump-autoload
 ```
 
 <a name="middleware">
+
 ### Middleware
 
 If you would like to use the middleware to protect to current team owner then just add the middleware provider to your `app\Http\Kernel.php` file.
@@ -173,9 +179,11 @@ Now only if the authenticated user is the owner of the current team can access t
 **And you are ready to go.**
 
 <a name="usage" />
+
 ## Usage
 
 <a name="scaffolding" />
+
 ### Scaffolding
 
 The easiest way to give your new Laravel project Team abilities is by using the `make:teamwork` command.
@@ -197,6 +205,7 @@ Imagine it as a the `make:auth` command for Teamwork.
 To get started, take a look at the new installed `/teams` route in your project.
 
 <a name="basic-concepts" />
+
 ### Basic concepts
 
 Let's start by creating two different Teams.
@@ -228,6 +237,7 @@ $user->teams()->attach($team->id); // id only
 By using the `attachTeam` method, if the User has no Teams assigned, the `current_team_id` column will automatically be set.
 
 <a name="know-my-teams" />
+
 ### Get to know my team(s)
 
 The currently assigned Team of a user can be accessed through the `currentTeam` relation like this:
@@ -253,6 +263,7 @@ The `Team` model has access to these methods:
 - `hasUser(User $user)` &mdash; Helper function to determine if a user is a teammember
 
 <a name="team-owner" />
+
 ### Team owner
 
 If you need to check if the User is a team owner (regardless of the current team) use the `isTeamOwner()` method on the User model.
@@ -276,6 +287,7 @@ if( Auth::user()->isOwnerOfTeam( $team ) )
 The `isOwnerOfTeam` method also allows an array or id as team parameter.
 
 <a name="switching-the-current-team" />
+
 ### Switching the current team
 
 If your Users are members of multiple teams you might want to give them access to a `switch team` mechanic in some way.
@@ -298,6 +310,7 @@ try {
 Just like the `isOwnerOfTeam` method, `switchTeam` accepts a Team object, array, id or null as a parameter.
 
 <a name="inviting-others" />
+
 ### Inviting others
 
 The best team is of no avail if you're the only team member.
@@ -355,6 +368,7 @@ if( !Teamwork::hasPendingInvite( $request->email, $request->team) )
 ```
 
 <a name="accepting-invites" />
+
 ### Accepting invites
 
 Once you invited other users to join your team, in order to accept the invitation use the `Teamwork` facade once again.
@@ -374,6 +388,7 @@ The `acceptInvite` method does two thing:
 - Delete the invitation afterwards.
 
 <a name="denying-invites" />
+
 ### Denying invites
 
 Just like accepting invites:
@@ -390,6 +405,7 @@ if( $invite ) // valid token found
 The `denyInvite` method is only responsible for deleting the invitation from the database.
 
 <a name="events" />
+
 ### Attaching/Detaching/Invite Events
 
 If you need to run additional processes after attaching/detaching a team from a user or inviting a user, you can Listen for these events:
@@ -499,6 +515,7 @@ class YourUserInvitedToTeamListener
 ```
 
 <a name="scope" />
+
 ### Limit Models to current Team
 
 If your models are somehow limited to the current team you will find yourself writing this query over and over again: `Model::where('team_id', auth()->user()->currentTeam->id)->get();`.
@@ -508,9 +525,7 @@ To automate this process, you can let your models use the `UsedByTeams` trait. T
 **Note:**
 > This assumes that the model has a field called `team_id`
 
-
 #### Usage
-
 
 ```php
 use Mpociot\Teamwork\Traits\UsedByTeams;
@@ -536,6 +551,7 @@ Task::allTeams()->get();
 
 
 <a name="license" />
+
 ## License
 
 Teamwork is free software distributed under the terms of the MIT license.
