@@ -17,17 +17,17 @@
     "minimum-stability": "dev",
     "prefer-stable" : true,
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=7.0.0",
         "laravel/framework": "~5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1",
         "mockery/mockery": "dev-master",
-        "illuminate/database": "~5.0",
+        "illuminate/database": "~5.5",
         "orchestra/testbench": "3.4.*@dev"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Mpociot\\Teamwork": "src/"
         }
     },
@@ -36,5 +36,12 @@
             "tests/models/User.php",
             "tests/models/Task.php"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mpociot\\Teamwork\\TeamworkServiceProvider"
+            ]
+        }
     }
 }
