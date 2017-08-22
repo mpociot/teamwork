@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mpociot\\Teamwork": "src/"
+            "Mpociot\\Teamwork\\": "src/"
         }
     },
     "autoload-dev": {
