@@ -36,5 +36,12 @@
             "tests/models/User.php",
             "tests/models/Task.php"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mpociot\\Teamwork\\TeamworkServiceProvider"
+            ]
+        }
     }
 }
