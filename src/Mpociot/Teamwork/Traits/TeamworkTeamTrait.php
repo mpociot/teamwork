@@ -36,7 +36,7 @@ trait TeamworkTeamTrait
      * Has-One relation with the user model.
      * This indicates the owner of the team
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function owner()
     {
