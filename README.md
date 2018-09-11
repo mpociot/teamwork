@@ -543,7 +543,7 @@ If theres a place in your app, where you really want to retrieve all models, no 
 **Example:**
 
 ```php
-// gets all teams for the currently active team of the authenticated user
+// gets all tasks for the currently active team of the authenticated user
 Task::all();
 
 // gets all tasks from all teams globally
