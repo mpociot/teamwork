@@ -36,13 +36,13 @@ trait TeamworkTeamTrait
      * Has-One relation with the user model.
      * This indicates the owner of the team
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
         $userModel   = Config::get( 'teamwork.user_model' );
         $userKeyName = ( new $userModel() )->getKeyName();
-        return $this->hasOne(Config::get('teamwork.user_model'), $userKeyName, "owner_id");
+        return $this->belongsTo(Config::get('teamwork.user_model'), "owner_id", $userKeyName);
     }
 
     /**
