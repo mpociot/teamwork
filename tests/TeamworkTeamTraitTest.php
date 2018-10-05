@@ -61,8 +61,8 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
             ->andReturn('TestUser');
 
 
-        $stub = m::mock( 'TestUserTeamTraitStub[hasOne]' );
-        $stub->shouldReceive('hasOne')
+        $stub = m::mock( 'TestUserTeamTraitStub[belongsTo]' );
+        $stub->shouldReceive('belongsTo')
             ->once()
             ->with('User', 'user_id', 'owner_id' )
             ->andReturn( [] );
