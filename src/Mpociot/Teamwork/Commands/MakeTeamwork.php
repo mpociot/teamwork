@@ -3,12 +3,12 @@
 namespace Mpociot\Teamwork\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Mpociot\Teamwork\Traits\DetectNamespace;
 
 class MakeTeamwork extends Command
 {
 
-    use DetectsApplicationNamespace;
+    use DetectNamespace;
 
     /**
      * The name and signature of the console command.
