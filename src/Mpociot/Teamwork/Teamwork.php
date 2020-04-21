@@ -46,6 +46,7 @@ class Teamwork
      * @param string|User $user
      * @param null|Team $team
      * @param callable $success
+     * @return TeamInvite
      * @throws \Exception
      */
     public function inviteToTeam( $user, $team = null, callable $success = null )
@@ -82,8 +83,10 @@ class Teamwork
         if ( !is_null( $success ) )
         {
             event(new UserInvitedToTeam($invite));
-            return $success( $invite );
+            $success($invite);
         }
+
+        return $invite;
     }
 
     /**

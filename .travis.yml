@@ -1,14 +1,18 @@
+dist: trusty
+
 language: php
 
 php:
-  - 5.6
-  - 7.0
+  - 7.2
+  - 7.3
+  - 7.4
 
-install:
-  - travis_retry composer install --no-interaction --prefer-source
+before_script:
+    - travis_retry composer self-update
+    - travis_retry composer install --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage.xml
+    - phpunit --coverage-text --coverage-clover=coverage.clover
 
 before_install:
   - pip install --user codecov

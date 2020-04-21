@@ -1,4 +1,6 @@
-<?php namespace Mpociot\Teamwork\Traits;
+<?php
+
+namespace Mpociot\Teamwork\Traits;
 
 /**
  * This file is part of Teamwork
@@ -19,9 +21,9 @@ trait TeamworkTeamTrait
      */
     public function invites()
     {
-        return $this->hasMany( Config::get('teamwork.invite_model'), 'team_id', 'id');
+        return $this->hasMany(Config::get('teamwork.invite_model'), 'team_id', 'id');
     }
-    
+
     /**
      * Many-to-Many relations with the user model.
      *
@@ -29,7 +31,7 @@ trait TeamworkTeamTrait
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('teamwork.user_model'), Config::get('teamwork.team_user_table'), 'team_id','user_id')->withTimestamps();
+        return $this->belongsToMany(Config::get('teamwork.user_model'), Config::get('teamwork.team_user_table'), 'team_id', 'user_id')->withTimestamps();
     }
 
     /**
@@ -40,7 +42,7 @@ trait TeamworkTeamTrait
      */
     public function owner()
     {
-        $userModel   = Config::get( 'teamwork.user_model' );
+        $userModel   = Config::get('teamwork.user_model');
         $userKeyName = ( new $userModel() )->getKeyName();
         return $this->hasOne(Config::get('teamwork.user_model'), $userKeyName, "owner_id");
     }
@@ -52,9 +54,8 @@ trait TeamworkTeamTrait
      * @param Model $user
      * @return bool
      */
-    public function hasUser( Model $user )
+    public function hasUser(Model $user)
     {
-        return $this->users()->where( $user->getKeyName(), "=", $user->getKey() )->first() ? true : false;
+        return $this->users()->where($user->getKeyName(), "=", $user->getKey())->first() ? true : false;
     }
-
 }

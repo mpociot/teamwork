@@ -1,15 +1,17 @@
 <?php
 
+namespace Mpociot\Teamwork\Tests\Feature;
+
 use Illuminate\Support\Facades\Config;
 use Mockery as m;
 use Mpociot\Teamwork\Traits\TeamworkTeamTrait;
 
-class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
+class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 {
-
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
+        parent::tearDown();
     }
 
     public function testGetInvites()
@@ -19,12 +21,12 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
             ->with('teamwork.invite_model')
             ->andReturn('Invite');
 
-        $stub = m::mock( 'TestUserTeamTraitStub[hasMany]' );
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[hasMany]');
         $stub->shouldReceive('hasMany')
             ->once()
-            ->with('Invite', 'team_id', 'id' )
-            ->andReturn( [] );
-        $this->assertEquals( [], $stub->invites() );
+            ->with('Invite', 'team_id', 'id')
+            ->andReturn([]);
+        $this->assertEquals([], $stub->invites());
     }
 
     public function testGetUsers()
@@ -39,7 +41,7 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
             ->with('teamwork.team_user_table')
             ->andReturn('TeamUser');
 
-        $stub = m::mock( 'TestUserTeamTraitStub[belongsToMany,withTimestamps]' );
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[belongsToMany,withTimestamps]');
 
         $stub->shouldReceive('withTimestamps')
             ->once()
@@ -47,10 +49,10 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
 
         $stub->shouldReceive('belongsToMany')
             ->once()
-            ->with('User', 'TeamUser', 'team_id', 'user_id' )
+            ->with('User', 'TeamUser', 'team_id', 'user_id')
             ->andReturnSelf();
 
-        $this->assertEquals( [], $stub->users() );
+        $this->assertEquals([], $stub->users());
     }
 
     public function testGetOwner()
@@ -58,74 +60,75 @@ class TeamworkTeamTraitTest extends PHPUnit_Framework_TestCase
         Config::shouldReceive('get')
             ->once()
             ->with('teamwork.user_model')
-            ->andReturn('TestUser');
+            ->andReturn('\Mpociot\Teamwork\Tests\Feature\TestUser');
 
-
-        $stub = m::mock( 'TestUserTeamTraitStub[hasOne]' );
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[hasOne]');
         $stub->shouldReceive('hasOne')
             ->once()
-            ->with('User', 'user_id', 'owner_id' )
-            ->andReturn( [] );
-        $this->assertEquals( [], $stub->owner() );
+            ->with('User', 'user_id', 'owner_id')
+            ->andReturn([]);
+
+        $this->assertEquals([], $stub->owner());
     }
 
     public function testHasUser()
     {
-        $stub = m::mock( 'TestUserTeamTraitStub[users,first]' );
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[users,first]');
 
-        $user = m::mock( 'TestUser[getKey]' );
+        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey]');
         $user->shouldReceive('getKey')
             ->once()
             ->andReturn('key');
 
         $stub->shouldReceive('first')
             ->once()
-            ->andReturn( true );
+            ->andReturn(true);
 
         $stub->shouldReceive('where')
             ->once()
-            ->with( "user_id" , "=", "key" )
+            ->with("user_id", "=", "key")
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
             ->andReturnSelf();
 
-        $this->assertTrue( $stub->hasUser( $user ) );
+        $this->assertTrue($stub->hasUser($user));
     }
 
     public function testHasUserReturnsFalse()
     {
-        $stub = m::mock( 'TestUserTeamTraitStub[users,first]' );
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[users,first]');
 
-        $user = m::mock( 'TestUser[getKey]' );
+        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey]');
         $user->shouldReceive('getKey')
             ->once()
             ->andReturn('key');
 
         $stub->shouldReceive('first')
             ->once()
-            ->andReturn( false );
+            ->andReturn(false);
 
         $stub->shouldReceive('where')
             ->once()
-            ->with( "user_id" , "=", "key" )
+            ->with("user_id", "=", "key")
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
             ->andReturnSelf();
 
-        $this->assertFalse( $stub->hasUser( $user ) );
+        $this->assertFalse($stub->hasUser($user));
     }
-
 }
 
-class TestUser extends Illuminate\Database\Eloquent\Model {
+class TestUser extends \Illuminate\Database\Eloquent\Model
+{
     public function getKeyName()
     {
         return "user_id";
     }
 }
-class TestUserTeamTraitStub extends Illuminate\Database\Eloquent\Model {
 
+class TestUserTeamTraitStub extends \Illuminate\Database\Eloquent\Model
+{
     use TeamworkTeamTrait;
 }

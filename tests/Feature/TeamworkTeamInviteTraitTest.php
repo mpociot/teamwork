@@ -1,12 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Config;
+namespace Mpociot\Teamwork\Tests\Feature;
+
+use Exception;
 use Mockery as m;
 use Mpociot\Teamwork\TeamInvite;
 use Mpociot\Teamwork\TeamworkTeam;
-use Mpociot\Teamwork\Traits\TeamworkTeamInviteTrait;
+use Mpociot\Teamwork\Tests\TestCase;
+use Mpociot\Teamwork\Tests\User;
 
-class TeamworkTeamInviteTraitTest  extends Orchestra\Testbench\TestCase
+class TeamworkTeamInviteTraitTest extends TestCase
 {
     protected $user;
     protected $invite;
@@ -22,8 +25,7 @@ class TeamworkTeamInviteTraitTest  extends Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('teamwork.user_model', 'User');
+        $app['config']->set('teamwork.user_model', User::class);
 
         \Schema::create('users', function ($table) {
             $table->increments('id');
@@ -34,14 +36,9 @@ class TeamworkTeamInviteTraitTest  extends Orchestra\Testbench\TestCase
         });
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-
-        $this->artisan('migrate', [
-            '--database' => 'testing',
-            '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
-        ]);
 
         $this->user = new User();
         $this->user->name = 'Julia';
@@ -65,21 +62,10 @@ class TeamworkTeamInviteTraitTest  extends Orchestra\Testbench\TestCase
         $this->invite->save();
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [\Mpociot\Teamwork\TeamworkServiceProvider::class];
-    }
-
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
-        ];
-    }
-
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
+        parent::tearDown();
     }
 
     public function testGetTeams()
