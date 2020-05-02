@@ -14,7 +14,7 @@ abstract class TestCase extends Orchestra
         $this->loadEnvironmentVariables();
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--path' => realpath(__DIR__.'/../src/database/migrations'),
+            '--path' => realpath(__DIR__.'/../database/migrations'),
         ]);
     }
 

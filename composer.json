@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mpociot\\Teamwork\\": "src/"
+            "Mpociot\\Teamwork\\": "src"
         }
     },
     "autoload-dev": {
@@ -46,7 +46,10 @@
         "laravel": {
             "providers": [
                 "Mpociot\\Teamwork\\TeamworkServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Teamwork": "Mpociot\\Teamwork\\Facades\\Teamwork"
+            }
         }
     }
 }

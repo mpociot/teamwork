@@ -36,7 +36,7 @@ class TeamworkServiceProvider extends ServiceProvider
     {
         // Publish config files
         $this->publishes( [
-            __DIR__ . '/../../config/config.php' => config_path( 'teamwork.php' ),
+            __DIR__ . '/../config/config.php' => config_path( 'teamwork.php' ),
         ] );
     }
 
@@ -49,7 +49,7 @@ class TeamworkServiceProvider extends ServiceProvider
             // Publish the migration
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                __DIR__.'/../../database/migrations/2016_05_18_000000_teamwork_setup_tables.php' => database_path('migrations/'.$timestamp.'_teamwork_setup_tables.php'),
+                __DIR__.'/../database/migrations/2016_05_18_000000_teamwork_setup_tables.php' => database_path('migrations/'.$timestamp.'_teamwork_setup_tables.php'),
               ], 'migrations');
         }
     }
@@ -63,7 +63,6 @@ class TeamworkServiceProvider extends ServiceProvider
     {
         $this->mergeConfig();
         $this->registerTeamwork();
-        $this->registerFacade();
         $this->registerCommands();
     }
 
@@ -80,18 +79,6 @@ class TeamworkServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the vault facade without the user having to add it to the app.php file.
-     *
-     * @return void
-     */
-    public function registerFacade() {
-        $this->app->booting(function()
-        {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Teamwork', 'Mpociot\Teamwork\Facades\Teamwork');
-        });
-    }
-    /**
      * Merges user's and teamwork's configs.
      *
      * @return void
@@ -99,7 +86,7 @@ class TeamworkServiceProvider extends ServiceProvider
     protected function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/config.php', 'teamwork'
+            __DIR__ . '/../config/config.php', 'teamwork'
         );
     }
 
