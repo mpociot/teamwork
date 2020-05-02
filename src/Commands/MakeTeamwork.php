@@ -74,7 +74,7 @@ class MakeTeamwork extends Command
                 app_path('Listeners/Teamwork/JoinTeamListener.php'),
                 str_replace(
                     '{{namespace}}',
-                    $this->getAppNamespace(),
+                    $this->getNamespace(),
                     file_get_contents(__DIR__ . '/../../stubs/listeners/JoinTeamListener.stub')
                 )
             );
@@ -138,8 +138,13 @@ class MakeTeamwork extends Command
     {
         return str_replace(
             '{{namespace}}',
-            app()->getNamespace(),
+            $this->getNamespace(),
             file_get_contents(__DIR__.'/../../stubs/controllers/'.$stubName.'.stub')
         );
+    }
+
+    protected function getNamespace()
+    {
+        return  app()->getNamespace();
     }
 }
