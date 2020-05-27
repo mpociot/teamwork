@@ -1,8 +1,13 @@
 <?php
 
-use Mpociot\Teamwork\TeamworkTeam;
+namespace Mpociot\Teamwork\Tests\Feature;
 
-class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
+use Mpociot\Teamwork\TeamworkTeam;
+use Mpociot\Teamwork\Tests\Task;
+use Mpociot\Teamwork\Tests\TestCase;
+use Mpociot\Teamwork\Tests\User;
+
+class UsedByTeamsTraitTest extends TestCase
 {
     protected $user;
     protected $team;
@@ -16,7 +21,6 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'testing');
         $app['config']->set('teamwork.user_model', 'User');
 
         \Schema::create('users', function ($table) {
@@ -34,17 +38,9 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
         });
     }
 
-    /**
-     *
-     */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-
-        $this->artisan('migrate', [
-            '--database' => 'testing',
-            '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
-        ]);
 
         $this->user = new User();
         $this->user->name = 'Marcel';
@@ -68,7 +64,8 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
 
     public function testThrowsExceptionWhenUnauthorized()
     {
-        $this->setExpectedException(\Exception::class,'No authenticated user with selected team present.');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No authenticated user with selected team present.');
 
         $task = new Task();
         $task->name = 'Buy milk';
@@ -98,7 +95,6 @@ class UsedByTeamsTraitTest extends Orchestra\Testbench\TestCase
 
     public function testGetsAllTasks()
     {
-
         auth()->login($this->user);
 
         $task = new Task();

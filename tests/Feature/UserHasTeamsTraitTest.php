@@ -1,9 +1,13 @@
 <?php
 
+namespace Mpociot\Teamwork\Tests\Feature;
+
 use Event;
 use Mpociot\Teamwork\TeamworkTeam;
+use Mpociot\Teamwork\Tests\TestCase;
+use Mpociot\Teamwork\Tests\User;
 
-class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
+class UserHasTeamsTraitTest extends TestCase
 {
     protected $user;
 
@@ -16,8 +20,7 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('teamwork.user_model', 'User');
+        $app['config']->set('teamwork.user_model', User::class);
 
         \Schema::create('users', function ($table) {
             $table->increments('id');
@@ -27,14 +30,9 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
         });
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-
-        $this->artisan('migrate', [
-            '--database' => 'testing',
-            '--realpath' => realpath(__DIR__.'/../src/database/migrations'),
-        ]);
 
         $this->user = new User();
         $this->user->name = 'Marcel';
@@ -300,7 +298,7 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
             $team2
         ]);
 
-        $this->setExpectedException('Mpociot\Teamwork\Exceptions\UserNotInTeamException',
+        $this->expectException('Mpociot\Teamwork\Exceptions\UserNotInTeamException',
             'The user is not in the team Test-Team 3');
         $this->user->switchTeam($team3);
     }
@@ -316,7 +314,7 @@ class UserHasTeamsTraitTest extends Orchestra\Testbench\TestCase
             $team2
         ]);
 
-        $this->setExpectedException('Illuminate\Database\Eloquent\ModelNotFoundException');
+        $this->expectException('Illuminate\Database\Eloquent\ModelNotFoundException');
         $this->user->switchTeam(3);
     }
 
