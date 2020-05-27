@@ -44,7 +44,7 @@ trait TeamworkTeamTrait
     {
         $userModel   = Config::get('teamwork.user_model');
         $userKeyName = ( new $userModel() )->getKeyName();
-        return $this->hasOne(Config::get('teamwork.user_model'), $userKeyName, "owner_id");
+        return $this->belongsTo($userModel, "owner_id", $userKeyName);
     }
 
     /**

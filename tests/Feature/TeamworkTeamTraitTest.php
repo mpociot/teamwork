@@ -62,10 +62,10 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
             ->with('teamwork.user_model')
             ->andReturn('\Mpociot\Teamwork\Tests\Feature\TestUser');
 
-        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[hasOne]');
-        $stub->shouldReceive('hasOne')
+        $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[belongsTo]');
+        $stub->shouldReceive('belongsTo')
             ->once()
-            ->with('User', 'user_id', 'owner_id')
+            ->with('\Mpociot\Teamwork\Tests\Feature\TestUser', 'owner_id', 'user_id')
             ->andReturn([]);
 
         $this->assertEquals([], $stub->owner());
