@@ -30,9 +30,9 @@ trait UsedByTeams
         });
 
         static::saving(function (Model $model) {
-            static::teamGuard();
-
             if (!isset($model->team_id)) {
+                static::teamGuard();
+
                 $model->team_id = auth()->user()->currentTeam->getKey();
             }
         });
