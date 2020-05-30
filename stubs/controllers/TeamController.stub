@@ -42,6 +42,10 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
         $teamModel = config('teamwork.team_model');
 
         $team = $teamModel::create([
@@ -99,6 +103,10 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
         $teamModel = config('teamwork.team_model');
 
         $team = $teamModel::findOrFail($id);
