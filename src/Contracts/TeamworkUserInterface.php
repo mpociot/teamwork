@@ -2,11 +2,6 @@
 
 namespace Mpociot\Teamwork\Contracts;
 
-/**
- * This file is part of Teamwork.
- *
- * @license MIT
- */
 interface TeamworkUserInterface
 {
     /**

@@ -2,13 +2,6 @@
 
 namespace Mpociot\Teamwork\Traits;
 
-/*
- * This file is part of Teamwork
- *
- * @license MIT
- * @package Teamwork
- */
-
 use Illuminate\Support\Facades\Config;
 
 trait TeamworkTeamInviteTrait

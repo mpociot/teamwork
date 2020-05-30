@@ -2,13 +2,6 @@
 
 namespace Mpociot\Teamwork;
 
-/*
- * This file is part of Teamwork
- *
- * @license MIT
- * @package Teamwork
- */
-
 use Illuminate\Support\ServiceProvider;
 
 class TeamworkServiceProvider extends ServiceProvider

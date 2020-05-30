@@ -5,11 +5,6 @@ namespace Mpociot\Teamwork;
 use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Events\UserInvitedToTeam;
 
-/**
- * This file is part of Teamwork.
- *
- * @license MIT
- */
 class Teamwork
 {
     /**
