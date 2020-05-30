@@ -1,6 +1,8 @@
-<?php namespace Mpociot\Teamwork\Traits;
+<?php
 
-/**
+namespace Mpociot\Teamwork\Traits;
+
+/*
  * This file is part of Teamwork,
  *
  * @license MIT
@@ -23,7 +25,7 @@ trait UserHasTeams
      */
     public function teams()
     {
-        return $this->belongsToMany( Config::get( 'teamwork.team_model' ),Config::get( 'teamwork.team_user_table' ), 'user_id', 'team_id' )->withTimestamps();
+        return $this->belongsToMany(Config::get('teamwork.team_model'), Config::get('teamwork.team_user_table'), 'user_id', 'team_id')->withTimestamps();
     }
 
     /**
@@ -33,7 +35,7 @@ trait UserHasTeams
      */
     public function currentTeam()
     {
-        return $this->hasOne( Config::get( 'teamwork.team_model' ), 'id', 'current_team_id' );
+        return $this->hasOne(Config::get('teamwork.team_model'), 'id', 'current_team_id');
     }
 
     /**
@@ -41,16 +43,16 @@ trait UserHasTeams
      */
     public function ownedTeams()
     {
-        return $this->teams()->where( "owner_id", "=", $this->getKey() );
+        return $this->teams()->where('owner_id', '=', $this->getKey());
     }
 
     /**
-     * One-to-Many relation with the invite model
+     * One-to-Many relation with the invite model.
      * @return mixed
      */
     public function invites()
     {
-        return $this->hasMany( Config::get('teamwork.invite_model'), 'email', 'email' );
+        return $this->hasMany(Config::get('teamwork.invite_model'), 'email', 'email');
     }
 
     /**
@@ -62,29 +64,27 @@ trait UserHasTeams
      */
     public static function bootUserHasTeams()
     {
-        static::deleting( function ( Model $user )
-        {
-            if ( !method_exists( Config::get( 'teamwork.user_model' ), 'bootSoftDeletes' ) )
-            {
-                $user->teams()->sync( [ ] );
+        static::deleting(function (Model $user) {
+            if (! method_exists(Config::get('teamwork.user_model'), 'bootSoftDeletes')) {
+                $user->teams()->sync([]);
             }
+
             return true;
-        } );
+        });
     }
 
-
     /**
-     * Returns if the user owns a team
+     * Returns if the user owns a team.
      *
      * @return bool
      */
     public function isOwner()
     {
-        return ( $this->teams()->where( "owner_id", "=", $this->getKey() )->first() ) ? true : false;
+        return ($this->teams()->where('owner_id', '=', $this->getKey())->first()) ? true : false;
     }
 
     /**
-     * Wrapper method for "isOwner"
+     * Wrapper method for "isOwner".
      *
      * @return bool
      */
@@ -97,30 +97,29 @@ trait UserHasTeams
      * @param $team
      * @return mixed
      */
-    protected function retrieveTeamId( $team )
+    protected function retrieveTeamId($team)
     {
-        if ( is_object( $team ) )
-        {
+        if (is_object($team)) {
             $team = $team->getKey();
         }
-        if ( is_array( $team ) && isset( $team[ "id" ] ) )
-        {
-            $team = $team[ "id" ];
+        if (is_array($team) && isset($team['id'])) {
+            $team = $team['id'];
         }
+
         return $team;
     }
 
-
     /**
-     * Returns if the user owns the given team
+     * Returns if the user owns the given team.
      *
      * @param mixed $team
      * @return bool
      */
-    public function isOwnerOfTeam( $team )
+    public function isOwnerOfTeam($team)
     {
-        $team_id        = $this->retrieveTeamId( $team );
-        return ( $this->teams()
+        $team_id = $this->retrieveTeamId($team);
+
+        return ($this->teams()
             ->where('owner_id', $this->getKey())
             ->where('team_id', $team_id)->first()
         ) ? true : false;
@@ -133,37 +132,35 @@ trait UserHasTeams
      * @param array $pivotData
      * @return $this
      */
-    public function attachTeam( $team, $pivotData = [] )
+    public function attachTeam($team, $pivotData = [])
     {
-        $team        = $this->retrieveTeamId( $team );
-        /**
+        $team = $this->retrieveTeamId($team);
+        /*
          * If the user has no current team,
          * use the attached one
          */
-        if( is_null( $this->current_team_id ) )
-        {
+        if (is_null($this->current_team_id)) {
             $this->current_team_id = $team;
             $this->save();
 
-            if( $this->relationLoaded('currentTeam') ) {
+            if ($this->relationLoaded('currentTeam')) {
                 $this->load('currentTeam');
             }
-
         }
-        
+
         // Reload relation
         $this->load('teams');
 
-        if( !$this->teams->contains( $team ) )
-        {
-            $this->teams()->attach( $team, $pivotData );
+        if (! $this->teams->contains($team)) {
+            $this->teams()->attach($team, $pivotData);
 
             event(new UserJoinedTeam($this, $team));
 
-            if( $this->relationLoaded('teams') ) {
+            if ($this->relationLoaded('teams')) {
                 $this->load('teams');
             }
         }
+
         return $this;
     }
 
@@ -173,99 +170,95 @@ trait UserHasTeams
      * @param mixed $team
      * @return $this
      */
-    public function detachTeam( $team )
+    public function detachTeam($team)
     {
-        $team        = $this->retrieveTeamId( $team );
-        $this->teams()->detach( $team );
+        $team = $this->retrieveTeamId($team);
+        $this->teams()->detach($team);
 
         event(new UserLeftTeam($this, $team));
 
-        if( $this->relationLoaded('teams') ) {
+        if ($this->relationLoaded('teams')) {
             $this->load('teams');
         }
-        
-        /**
+
+        /*
          * If the user has no more teams,
          * unset the current_team_id
          */
-        if( $this->teams()->count() === 0 || $this->current_team_id === $team )
-        {
+        if ($this->teams()->count() === 0 || $this->current_team_id === $team) {
             $this->current_team_id = null;
             $this->save();
 
-            if( $this->relationLoaded('currentTeam') ) {
+            if ($this->relationLoaded('currentTeam')) {
                 $this->load('currentTeam');
             }
-
         }
+
         return $this;
     }
 
     /**
-     * Attach multiple teams to a user
+     * Attach multiple teams to a user.
      *
      * @param mixed $teams
      * @return $this
      */
-    public function attachTeams( $teams )
+    public function attachTeams($teams)
     {
-        foreach ( $teams as $team )
-        {
-            $this->attachTeam( $team );
+        foreach ($teams as $team) {
+            $this->attachTeam($team);
         }
+
         return $this;
     }
 
     /**
-     * Detach multiple teams from a user
+     * Detach multiple teams from a user.
      *
      * @param mixed $teams
      * @return $this
      */
-    public function detachTeams( $teams )
+    public function detachTeams($teams)
     {
-        foreach ( $teams as $team )
-        {
-            $this->detachTeam( $team );
+        foreach ($teams as $team) {
+            $this->detachTeam($team);
         }
+
         return $this;
     }
 
     /**
-     * Switch the current team of the user
+     * Switch the current team of the user.
      *
-     * @param object|array|integer $team
+     * @param object|array|int $team
      * @return $this
      * @throws ModelNotFoundException
      * @throws UserNotInTeamException
      */
-    public function switchTeam( $team )
+    public function switchTeam($team)
     {
-        if( $team !== 0 && $team !== null )
-        {
-            $team        = $this->retrieveTeamId( $team );
-            $teamModel   = Config::get( 'teamwork.team_model' );
-            $teamObject  = ( new $teamModel() )->find( $team );
-            if( !$teamObject )
-            {
+        if ($team !== 0 && $team !== null) {
+            $team = $this->retrieveTeamId($team);
+            $teamModel = Config::get('teamwork.team_model');
+            $teamObject = ( new $teamModel() )->find($team);
+            if (! $teamObject) {
                 $exception = new ModelNotFoundException();
-                $exception->setModel( $teamModel );
+                $exception->setModel($teamModel);
                 throw $exception;
             }
-            if( !$teamObject->users->contains( $this->getKey() ) )
-            {
+            if (! $teamObject->users->contains($this->getKey())) {
                 $exception = new UserNotInTeamException();
-                $exception->setTeam( $teamObject->name );
+                $exception->setTeam($teamObject->name);
                 throw $exception;
             }
         }
         $this->current_team_id = $team;
         $this->save();
 
-        if( $this->relationLoaded('currentTeam') ) {
+        if ($this->relationLoaded('currentTeam')) {
             $this->load('currentTeam');
         }
-        
+
         return $this;
     }
 }

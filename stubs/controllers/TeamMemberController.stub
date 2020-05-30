@@ -41,7 +41,7 @@ class TeamMemberController extends Controller
     {
         $teamModel = config('teamwork.team_model');
         $team = $teamModel::findOrFail($team_id);
-        if (!auth()->user()->isOwnerOfTeam($team)) {
+        if (! auth()->user()->isOwnerOfTeam($team)) {
             abort(403);
         }
 
@@ -70,10 +70,8 @@ class TeamMemberController extends Controller
         $teamModel = config('teamwork.team_model');
         $team = $teamModel::findOrFail($team_id);
 
-        if( !Teamwork::hasPendingInvite( $request->email, $team) )
-        {
-            Teamwork::inviteToTeam( $request->email, $team, function( $invite )
-            {
+        if (! Teamwork::hasPendingInvite($request->email, $team)) {
+            Teamwork::inviteToTeam($request->email, $team, function ($invite) {
                 Mail::send('teamwork.emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
                     $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
                 });
@@ -81,7 +79,7 @@ class TeamMemberController extends Controller
             });
         } else {
             return redirect()->back()->withErrors([
-                'email' => 'The email address is already invited to the team.'
+                'email' => 'The email address is already invited to the team.',
             ]);
         }
 
@@ -103,5 +101,4 @@ class TeamMemberController extends Controller
 
         return redirect(route('teams.members.show', $invite->team));
     }
-
 }

@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class TeamworkSetupTables extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -69,8 +68,12 @@ class TeamworkSetupTables extends Migration
         });
 
         Schema::table(\Config::get('teamwork.team_user_table'), function (Blueprint $table) {
-            if (DB::getDriverName() !== 'sqlite') $table->dropForeign(\Config::get('teamwork.team_user_table').'_user_id_foreign');
-            if (DB::getDriverName() !== 'sqlite') $table->dropForeign(\Config::get('teamwork.team_user_table').'_team_id_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(\Config::get('teamwork.team_user_table').'_user_id_foreign');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(\Config::get('teamwork.team_user_table').'_team_id_foreign');
+            }
         });
 
         Schema::drop(\Config::get('teamwork.team_user_table'));

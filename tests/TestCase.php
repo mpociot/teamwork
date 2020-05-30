@@ -37,7 +37,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageAliases($app)
     {
         return [
-            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
+            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class,
         ];
     }
 }

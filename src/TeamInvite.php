@@ -1,9 +1,10 @@
-<?php namespace Mpociot\Teamwork;
+<?php
+
+namespace Mpociot\Teamwork;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Mpociot\Teamwork\Traits\TeamworkTeamInviteTrait;
-
 
 class TeamInvite extends Model
 {
@@ -21,9 +22,9 @@ class TeamInvite extends Model
      *
      * @param array $attributes
      */
-    public function __construct( array $attributes = [ ] )
+    public function __construct(array $attributes = [])
     {
-        parent::__construct( $attributes );
-        $this->table = Config::get( 'teamwork.team_invites_table' );
+        parent::__construct($attributes);
+        $this->table = Config::get('teamwork.team_invites_table');
     }
 }

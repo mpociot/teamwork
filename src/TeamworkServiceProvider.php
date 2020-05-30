@@ -1,6 +1,8 @@
-<?php namespace Mpociot\Teamwork;
+<?php
 
-/**
+namespace Mpociot\Teamwork;
+
+/*
  * This file is part of Teamwork
  *
  * @license MIT
@@ -30,18 +32,18 @@ class TeamworkServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish Teamwork configuration
+     * Publish Teamwork configuration.
      */
     protected function publishConfig()
     {
         // Publish config files
-        $this->publishes( [
-            __DIR__ . '/../config/config.php' => config_path( 'teamwork.php' ),
-        ] );
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('teamwork.php'),
+        ]);
     }
 
     /**
-     * Publish Teamwork migration
+     * Publish Teamwork migration.
      */
     protected function publishMigration()
     {
@@ -73,7 +75,7 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     protected function registerTeamwork()
     {
-        $this->app->bind('teamwork', function($app) {
+        $this->app->bind('teamwork', function ($app) {
             return new Teamwork($app);
         });
     }
@@ -86,12 +88,12 @@ class TeamworkServiceProvider extends ServiceProvider
     protected function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/config.php', 'teamwork'
+            __DIR__.'/../config/config.php', 'teamwork'
         );
     }
 
     /**
-     * Register scaffolding command
+     * Register scaffolding command.
      */
     protected function registerCommands()
     {

@@ -1,10 +1,9 @@
 <?php
 
 /**
- * This file is part of Teamwork
+ * This file is part of Teamwork.
  *
  * @license MIT
- * @package Teamwork
  */
 
 return [

@@ -2,7 +2,7 @@
 
 namespace Mpociot\Teamwork\Traits;
 
-/**
+/*
  * This file is part of Teamwork
  *
  * @license MIT
@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Config;
 
 trait TeamworkTeamTrait
 {
-
     /**
-     * One-to-Many relation with the invite model
+     * One-to-Many relation with the invite model.
      * @return mixed
      */
     public function invites()
@@ -36,26 +35,27 @@ trait TeamworkTeamTrait
 
     /**
      * Has-One relation with the user model.
-     * This indicates the owner of the team
+     * This indicates the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function owner()
     {
-        $userModel   = Config::get('teamwork.user_model');
+        $userModel = Config::get('teamwork.user_model');
         $userKeyName = ( new $userModel() )->getKeyName();
-        return $this->belongsTo($userModel, "owner_id", $userKeyName);
+
+        return $this->belongsTo($userModel, 'owner_id', $userKeyName);
     }
 
     /**
      * Helper function to determine if a user is part
-     * of this team
+     * of this team.
      *
      * @param Model $user
      * @return bool
      */
     public function hasUser(Model $user)
     {
-        return $this->users()->where($user->getKeyName(), "=", $user->getKey())->first() ? true : false;
+        return $this->users()->where($user->getKeyName(), '=', $user->getKey())->first() ? true : false;
     }
 }

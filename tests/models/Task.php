@@ -2,8 +2,8 @@
 
 namespace Mpociot\Teamwork\Tests;
 
-use Mpociot\Teamwork\Traits\UsedByTeams;
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Teamwork\Traits\UsedByTeams;
 
 class Task extends Model
 {

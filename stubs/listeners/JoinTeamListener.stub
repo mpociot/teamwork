@@ -1,4 +1,5 @@
 <?php
+
 namespace {{namespace}}Listeners\Teamwork;
 
 use Teamwork;

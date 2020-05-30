@@ -36,7 +36,7 @@ class UserNotInTeamExceptionTest extends TestCase
     public function testGetTeam(): void
     {
         $exception = new \Mpociot\Teamwork\Exceptions\UserNotInTeamException();
-        $exception->setTeam( "Test" );
-        $this->assertEquals( "Test", $exception->getTeam() );
+        $exception->setTeam('Test');
+        $this->assertEquals('Test', $exception->getTeam());
     }
 }

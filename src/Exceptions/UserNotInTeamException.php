@@ -1,19 +1,20 @@
-<?php namespace Mpociot\Teamwork\Exceptions;
+<?php
+
+namespace Mpociot\Teamwork\Exceptions;
 
 use RuntimeException;
 
 class UserNotInTeamException extends RuntimeException
 {
-
     /**
-     * Name of the affected team
+     * Name of the affected team.
      *
      * @var string
      */
     protected $team;
 
     /**
-     * Set the affected team
+     * Set the affected team.
      *
      * @param  string   $team
      * @return $this

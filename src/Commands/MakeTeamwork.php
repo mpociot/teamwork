@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 
 class MakeTeamwork extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -75,7 +74,7 @@ class MakeTeamwork extends Command
                 str_replace(
                     '{{namespace}}',
                     $this->getNamespace(),
-                    file_get_contents(__DIR__ . '/../../stubs/listeners/JoinTeamListener.stub')
+                    file_get_contents(__DIR__.'/../../stubs/listeners/JoinTeamListener.stub')
                 )
             );
 

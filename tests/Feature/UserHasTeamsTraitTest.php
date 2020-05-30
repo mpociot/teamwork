@@ -47,7 +47,7 @@ class UserHasTeamsTraitTest extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
+            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class,
         ];
     }
 
@@ -109,7 +109,7 @@ class UserHasTeamsTraitTest extends TestCase
 
     public function testCanSetPivotDataOnAttachTeamMethod()
     {
-        \Schema::table(config( 'teamwork.team_user_table' ), function ($table) {
+        \Schema::table(config('teamwork.team_user_table'), function ($table) {
             $table->boolean('pivot_set')->default(false);
         });
 
@@ -121,7 +121,7 @@ class UserHasTeamsTraitTest extends TestCase
         $this->assertDatabaseHas(config('teamwork.team_user_table'), [
             'user_id' => $this->user->getKey(),
             'team_id' => $team->getKey(),
-            'pivot_set' => true
+            'pivot_set' => true,
         ]);
     }
 
@@ -223,7 +223,7 @@ class UserHasTeamsTraitTest extends TestCase
         $this->user->attachTeams([
             $team1,
             $team2,
-            $team3
+            $team3,
         ]);
 
         $this->assertCount(3, $this->user->teams()->get());
@@ -238,14 +238,14 @@ class UserHasTeamsTraitTest extends TestCase
         $this->user->attachTeams([
             $team1,
             $team2,
-            $team3
+            $team3,
         ]);
 
         $this->assertCount(3, $this->user->teams()->get());
 
         $this->user->detachTeams([
             $team1,
-            $team3
+            $team3,
         ]);
 
         $this->assertCount(1, $this->user->teams()->get());
@@ -260,7 +260,7 @@ class UserHasTeamsTraitTest extends TestCase
         $this->user->attachTeams([
             $team1,
             $team2,
-            $team3
+            $team3,
         ]);
 
         $this->assertEquals($team1->getKey(), $this->user->currentTeam->getKey());
@@ -279,7 +279,7 @@ class UserHasTeamsTraitTest extends TestCase
         $this->user->attachTeams([
             $team1,
             $team2,
-            $team3
+            $team3,
         ]);
         $this->assertEquals($team1->getKey(), $this->user->currentTeam->getKey());
         $this->user->switchTeam($team2);
@@ -288,14 +288,13 @@ class UserHasTeamsTraitTest extends TestCase
 
     public function testUserCannotSwitchToInvalidTeam()
     {
-
         $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
         $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
         $team3 = TeamworkTeam::create(['name' => 'Test-Team 3']);
 
         $this->user->attachTeams([
             $team1,
-            $team2
+            $team2,
         ]);
 
         $this->expectException('Mpociot\Teamwork\Exceptions\UserNotInTeamException',
@@ -305,17 +304,15 @@ class UserHasTeamsTraitTest extends TestCase
 
     public function testUserCannotSwitchToNotExistingTeam()
     {
-
         $team1 = TeamworkTeam::create(['name' => 'Test-Team 1']);
         $team2 = TeamworkTeam::create(['name' => 'Test-Team 2']);
 
         $this->user->attachTeams([
             $team1,
-            $team2
+            $team2,
         ]);
 
         $this->expectException('Illuminate\Database\Eloquent\ModelNotFoundException');
         $this->user->switchTeam(3);
     }
-
 }

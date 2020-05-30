@@ -1,6 +1,8 @@
-<?php namespace Mpociot\Teamwork\Traits;
+<?php
 
-/**
+namespace Mpociot\Teamwork\Traits;
+
+/*
  * This file is part of Teamwork
  *
  * @license MIT
@@ -13,24 +15,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Class UsedByTeams
- * @package Mpociot\Teamwork\Traits
+ * Class UsedByTeams.
  */
 trait UsedByTeams
 {
     /**
-     * Boot the global scope
+     * Boot the global scope.
      */
     protected static function bootUsedByTeams()
     {
         static::addGlobalScope('team', function (Builder $builder) {
             static::teamGuard();
 
-            $builder->where($builder->getQuery()->from . '.team_id', auth()->user()->currentTeam->getKey());
+            $builder->where($builder->getQuery()->from.'.team_id', auth()->user()->currentTeam->getKey());
         });
 
         static::saving(function (Model $model) {
-            if (!isset($model->team_id)) {
+            if (! isset($model->team_id)) {
                 static::teamGuard();
 
                 $model->team_id = auth()->user()->currentTeam->getKey();
@@ -60,7 +61,7 @@ trait UsedByTeams
      */
     protected static function teamGuard()
     {
-        if (auth()->guest() || !auth()->user()->currentTeam) {
+        if (auth()->guest() || ! auth()->user()->currentTeam) {
             throw new Exception('No authenticated user with selected team present.');
         }
     }

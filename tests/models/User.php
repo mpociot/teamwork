@@ -1,4 +1,5 @@
 <?php
+
 namespace Mpociot\Teamwork\Tests;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;

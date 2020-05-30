@@ -58,7 +58,7 @@ class UsedByTeamsTraitTest extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
+            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class,
         ];
     }
 
@@ -121,7 +121,7 @@ class UsedByTeamsTraitTest extends TestCase
 
         $this->assertDatabaseHas('tasks', [
             'name' => 'Buy milk',
-            'team_id' => $this->user->currentTeam->getKey()
+            'team_id' => $this->user->currentTeam->getKey(),
         ]);
     }
 }

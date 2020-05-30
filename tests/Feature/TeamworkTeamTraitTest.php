@@ -86,7 +86,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with("user_id", "=", "key")
+            ->with('user_id', '=', 'key')
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -110,7 +110,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with("user_id", "=", "key")
+            ->with('user_id', '=', 'key')
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -124,7 +124,7 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
 {
     public function getKeyName()
     {
-        return "user_id";
+        return 'user_id';
     }
 }
 

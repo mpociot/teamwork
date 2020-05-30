@@ -56,9 +56,9 @@ class TeamworkTeamInviteTraitTest extends TestCase
         $this->invite->team_id = $this->team->getKey();
         $this->invite->user_id = $this->inviter->getKey();
         $this->invite->email = $this->user->email;
-        $this->invite->type         = 'invite';
-        $this->invite->accept_token = md5( uniqid( microtime() ) );
-        $this->invite->deny_token   = md5( uniqid( microtime() ) );
+        $this->invite->type = 'invite';
+        $this->invite->accept_token = md5(uniqid(microtime()));
+        $this->invite->deny_token = md5(uniqid(microtime()));
         $this->invite->save();
     }
 
@@ -82,5 +82,4 @@ class TeamworkTeamInviteTraitTest extends TestCase
     {
         $this->assertEquals($this->inviter->getKey(), $this->invite->inviter->getKey());
     }
-
 }

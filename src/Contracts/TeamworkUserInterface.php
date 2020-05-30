@@ -1,10 +1,11 @@
-<?php namespace Mpociot\Teamwork\Contracts;
+<?php
+
+namespace Mpociot\Teamwork\Contracts;
 
 /**
- * This file is part of Teamwork
+ * This file is part of Teamwork.
  *
  * @license MIT
- * @package Teamwork
  */
 interface TeamworkUserInterface
 {
@@ -23,27 +24,25 @@ interface TeamworkUserInterface
     public function currentTeam();
 
     /**
-     * One-to-Many relation with the invite model
+     * One-to-Many relation with the invite model.
      * @return mixed
      */
     public function invites();
 
-
     /**
-     * Returns if the user owns a team
+     * Returns if the user owns a team.
      *
      * @return bool
      */
     public function isOwner();
 
-
     /**
-     * Returns if the user owns the given team
+     * Returns if the user owns the given team.
      *
      * @param mixed $team
      * @return bool
      */
-    public function isOwnerOfTeam( $team );
+    public function isOwnerOfTeam($team);
 
     /**
      * Alias to eloquent many-to-many relation's attach() method.
@@ -51,35 +50,35 @@ interface TeamworkUserInterface
      * @param mixed $team
      * @param array $pivotData
      */
-    public function attachTeam( $team, $pivotData = [] );
+    public function attachTeam($team, $pivotData = []);
 
     /**
      * Alias to eloquent many-to-many relation's detach() method.
      *
      * @param mixed $team
      */
-    public function detachTeam( $team );
+    public function detachTeam($team);
 
     /**
-     * Attach multiple teams to a user
+     * Attach multiple teams to a user.
      *
      * @param mixed $teams
      */
-    public function attachTeams( $teams );
+    public function attachTeams($teams);
 
     /**
-     * Detach multiple teams from a user
+     * Detach multiple teams from a user.
      *
      * @param mixed $teams
      */
-    public function detachTeams( $teams );
+    public function detachTeams($teams);
 
     /**
-     * Switch the current team of the user
+     * Switch the current team of the user.
      *
-     * @param object|array|integer $team
+     * @param object|array|int $team
      * @throws ModelNotFoundException
      * @throws UserNotInTeamException
      */
-    public function switchTeam( $team );
+    public function switchTeam($team);
 }

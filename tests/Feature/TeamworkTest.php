@@ -4,8 +4,8 @@ namespace Mpociot\Teamwork\Tests\Feature;
 
 use Exception;
 use Illuminate\Support\Facades\Config;
-use Mpociot\Teamwork\TeamInvite;
 use Mockery as m;
+use Mpociot\Teamwork\TeamInvite;
 use Mpociot\Teamwork\TeamworkTeam;
 use Mpociot\Teamwork\Tests\TestCase;
 use Mpociot\Teamwork\Tests\User;
@@ -50,7 +50,7 @@ class TeamworkTest extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class
+            'Teamwork' => \Mpociot\Teamwork\Facades\Teamwork::class,
         ];
     }
 
@@ -60,13 +60,13 @@ class TeamworkTest extends TestCase
             $team = TeamworkTeam::create(['name' => 'Test-Team 1']);
         }
 
-        $invite               = $this->app->make(Config::get('teamwork.invite_model'));
-        $invite->user_id      = $this->user->getKey();
-        $invite->team_id      = $team->getKey();
-        $invite->type         = 'invite';
-        $invite->email        = 'foo@bar.com';
+        $invite = $this->app->make(Config::get('teamwork.invite_model'));
+        $invite->user_id = $this->user->getKey();
+        $invite->team_id = $team->getKey();
+        $invite->type = 'invite';
+        $invite->email = 'foo@bar.com';
         $invite->accept_token = md5(uniqid(microtime()));
-        $invite->deny_token   = md5(uniqid(microtime()));
+        $invite->deny_token = md5(uniqid(microtime()));
         $invite->save();
 
         return $invite;
@@ -77,7 +77,6 @@ class TeamworkTest extends TestCase
         m::close();
         parent::tearDown();
     }
-
 
     public function testUser()
     {
@@ -94,7 +93,6 @@ class TeamworkTest extends TestCase
         $this->assertEquals($invite->toArray(), \Teamwork::getInviteFromDenyToken($invite->deny_token)->toArray());
     }
 
-
     public function testDenyInvite()
     {
         $invite = $this->createInvite();
@@ -102,12 +100,10 @@ class TeamworkTest extends TestCase
         $this->assertNull(TeamInvite::find($invite->getKey()));
     }
 
-
     public function testHasPendingInviteFalse()
     {
         $this->assertFalse(\Teamwork::hasPendingInvite('foo@bar.com', 1));
     }
-
 
     public function testHasPendingInviteTrue()
     {
@@ -121,7 +117,6 @@ class TeamworkTest extends TestCase
         $invite = $this->createInvite($team);
         $this->assertTrue(\Teamwork::hasPendingInvite($invite->email, $team));
     }
-
 
     public function testHasPendingInviteFromArray()
     {
@@ -158,18 +153,18 @@ class TeamworkTest extends TestCase
     {
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
 
         $callback = m::mock('stdClass');
         $callback->shouldReceive('callback')->once()
             ->with(m::type(TeamInvite::class))->andReturn();
-        \Teamwork::inviteToTeam($email, $team->getKey(), array($callback,'callback'));
+        \Teamwork::inviteToTeam($email, $team->getKey(), [$callback, 'callback']);
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
@@ -177,18 +172,18 @@ class TeamworkTest extends TestCase
     {
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
 
         $callback = m::mock('stdClass');
         $callback->shouldReceive('callback')->once()
             ->with(m::type(TeamInvite::class))->andReturn();
-        \Teamwork::inviteToTeam($email, $team, array($callback,'callback'));
+        \Teamwork::inviteToTeam($email, $team, [$callback, 'callback']);
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
@@ -196,36 +191,36 @@ class TeamworkTest extends TestCase
     {
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
 
         $callback = m::mock('stdClass');
         $callback->shouldReceive('callback')->once()
             ->with(m::type(TeamInvite::class))->andReturn();
-        \Teamwork::inviteToTeam($email, $team->toArray(), array($callback,'callback'));
+        \Teamwork::inviteToTeam($email, $team->toArray(), [$callback, 'callback']);
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
     public function testCanInviteToTeamWithUser()
     {
         auth()->login($this->user);
-        $this->user->email = "asd@fake.com";
+        $this->user->email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
 
         $callback = m::mock('stdClass');
         $callback->shouldReceive('callback')->once()
             ->with(m::type(TeamInvite::class))->andReturn();
-        \Teamwork::inviteToTeam($this->user, $team->toArray(), array($callback,'callback'));
+        \Teamwork::inviteToTeam($this->user, $team->toArray(), [$callback, 'callback']);
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
             'user_id' => $this->user->getKey(),
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
@@ -233,18 +228,18 @@ class TeamworkTest extends TestCase
     {
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
         $this->user->attachTeam($team);
 
         $callback = m::mock('stdClass');
         $callback->shouldReceive('callback')->once()
             ->with(m::type(TeamInvite::class))->andReturn();
-        \Teamwork::inviteToTeam($email, null, array($callback,'callback'));
+        \Teamwork::inviteToTeam($email, null, [$callback, 'callback']);
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
@@ -252,7 +247,7 @@ class TeamworkTest extends TestCase
     {
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
         $this->user->attachTeam($team);
 
@@ -260,7 +255,7 @@ class TeamworkTest extends TestCase
 
         $this->assertDatabaseHas(config('teamwork.team_invites_table'), [
             'email' => 'asd@fake.com',
-            'team_id' => $team->getKey()
+            'team_id' => $team->getKey(),
         ]);
     }
 
@@ -270,10 +265,11 @@ class TeamworkTest extends TestCase
 
         auth()->login($this->user);
 
-        $email = "asd@fake.com";
+        $email = 'asd@fake.com';
         $team = TeamworkTeam::create(['name' => 'test']);
         $this->user->attachTeam($team);
 
-        \Teamwork::inviteToTeam($email, $team, function($invite) { });
+        \Teamwork::inviteToTeam($email, $team, function ($invite) {
+        });
     }
 }
