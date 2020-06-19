@@ -4,6 +4,8 @@
 /vendor
 composer.phar
 phpunit.phar
+composer.lock
+.php_cs.cache
 
 /conf
 /.settings
