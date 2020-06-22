@@ -1,6 +1,6 @@
 # Teamwork
 
-This package ist supported by Laravel 7 and above.
+This package ist supported by Laravel 6 and above.
 
 [![Latest Version](https://img.shields.io/packagist/v/mpociot/teamwork.svg)](https://github.com/mpociot/teamwork/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -9,7 +9,7 @@ This package ist supported by Laravel 7 and above.
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a2a26e55-bfc7-49a9-933b-72ca7c245034/mini.png)](https://insight.sensiolabs.com/projects/a2a26e55-bfc7-49a9-933b-72ca7c245034)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpociot/teamwork/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpociot/teamwork/?branch=master)
 
-Teamwork is the fastest and easiest method to add a User / Team association with Invites to your **Laravel 5** project.
+Teamwork is the fastest and easiest method to add a User / Team association with Invites to your **Laravel 6+** project.
 
 ## Installation
 
