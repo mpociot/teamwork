@@ -1,6 +1,6 @@
 # Teamwork
 
-This package ist supported by Laravel 6 and above.
+This package supports Laravel 6 and above.
 
 [![Latest Version](https://img.shields.io/packagist/v/mpociot/teamwork.svg)](https://github.com/mpociot/teamwork/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
