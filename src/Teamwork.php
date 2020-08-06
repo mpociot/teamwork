@@ -3,6 +3,7 @@
 namespace Mpociot\Teamwork;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Foundation\Application;
 use Mpociot\Teamwork\Events\UserInvitedToTeam;
 
 class Teamwork
@@ -19,7 +20,7 @@ class Teamwork
      *
      * @param \Illuminate\Foundation\Application $app
      */
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
