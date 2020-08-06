@@ -7,13 +7,6 @@ use Illuminate\Support\ServiceProvider;
 class TeamworkServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
@@ -68,9 +61,7 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     protected function registerTeamwork()
     {
-        $this->app->bind('teamwork', function ($app) {
-            return new Teamwork($app);
-        });
+        $this->app->alias(Teamwork::class, 'teamwork');
     }
 
     /**
