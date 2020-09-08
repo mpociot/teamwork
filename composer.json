@@ -2,7 +2,10 @@
     "name": "mpociot/teamwork",
     "license": "MIT",
     "description": "User to Team associations for the Laravel 5 Framework",
-    "keywords": ["Teams","Invite"],
+    "keywords": [
+        "Teams",
+        "Invite"
+    ],
     "homepage": "http://github.com/mpociot/teamwork",
     "authors": [
         {
@@ -15,15 +18,15 @@
         "source": "https://github.com/mpociot/teamwork"
     },
     "minimum-stability": "dev",
-    "prefer-stable" : true,
+    "prefer-stable": true,
     "require": {
         "php": "^7.2.5",
-        "laravel/framework": "^6.0|^7.0"
+        "laravel/framework": "^6.0|^7.0|^8.0"
     },
     "require-dev": {
-        "mockery/mockery": "^1.3.1",
-        "illuminate/database": "^6.0|^7.0",
-        "orchestra/testbench": "^4.0|^5.0",
+        "mockery/mockery": "^1.3.1|^1.3.1",
+        "illuminate/database": "^6.0|^7.0|^8.0",
+        "orchestra/testbench": "^4.0|^5.0|^6.0",
         "doctrine/dbal": "^2.10"
     },
     "config": {
