@@ -1,5 +1,8 @@
 # Changelog
 
+#### v6.1.0 `2020-09-11`
+- Add Laravel 8 support
+
 #### v6.0.3 `2020-08-06`
 - Teamwork class can be resolved through type hinting (If you prefer, you can still use the Facade). Thanks to @rmccullagh.
 
