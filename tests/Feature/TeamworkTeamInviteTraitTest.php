@@ -6,8 +6,8 @@ use Exception;
 use Mockery as m;
 use Mpociot\Teamwork\TeamInvite;
 use Mpociot\Teamwork\TeamworkTeam;
+use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
-use Mpociot\Teamwork\Tests\User;
 
 class TeamworkTeamInviteTraitTest extends TestCase
 {

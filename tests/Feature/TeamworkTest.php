@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Config;
 use Mockery as m;
 use Mpociot\Teamwork\TeamInvite;
 use Mpociot\Teamwork\TeamworkTeam;
+use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
-use Mpociot\Teamwork\Tests\User;
 
 class TeamworkTest extends TestCase
 {
