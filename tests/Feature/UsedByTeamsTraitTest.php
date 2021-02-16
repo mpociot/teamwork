@@ -3,9 +3,9 @@
 namespace Mpociot\Teamwork\Tests\Feature;
 
 use Mpociot\Teamwork\TeamworkTeam;
-use Mpociot\Teamwork\Tests\Task;
+use Mpociot\Teamwork\Tests\Support\Task;
+use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
-use Mpociot\Teamwork\Tests\User;
 
 class UsedByTeamsTraitTest extends TestCase
 {

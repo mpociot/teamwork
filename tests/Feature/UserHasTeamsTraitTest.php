@@ -4,8 +4,8 @@ namespace Mpociot\Teamwork\Tests\Feature;
 
 use Event;
 use Mpociot\Teamwork\TeamworkTeam;
+use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
-use Mpociot\Teamwork\Tests\User;
 
 class UserHasTeamsTraitTest extends TestCase
 {

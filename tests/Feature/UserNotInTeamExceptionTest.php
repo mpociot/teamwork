@@ -3,8 +3,8 @@
 namespace Mpociot\Teamwork\Tests\Feature;
 
 use Mockery as m;
+use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
-use Mpociot\Teamwork\Tests\User;
 
 class UserNotInTeamExceptionTest extends TestCase
 {
