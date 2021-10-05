@@ -158,7 +158,7 @@ $myOtherCompany->name = 'My other awesome team';
 $myOtherCompany->save();
 ```
 
-Now thanks to the `UserHasTeams` trait, assigning the Teams to the user is uber easy:
+Now thanks to the `UserHasTeams` trait, assigning the Teams to the user is super easy:
 
 ```php
 $user = User::where('username', '=', 'sebastian')->first();
