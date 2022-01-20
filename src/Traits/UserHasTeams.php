@@ -73,7 +73,9 @@ trait UserHasTeams
      */
     public function isOwner()
     {
-        return ($this->teams()->where('owner_id', '=', $this->getKey())->first()) ? true : false;
+        return (bool) $this->teams
+            ->where('owner_id', '=', $this->getKey())
+            ->first();
     }
 
     /**
@@ -112,10 +114,9 @@ trait UserHasTeams
     {
         $team_id = $this->retrieveTeamId($team);
 
-        return ($this->teams()
+        return (bool) $this->teams
             ->where('owner_id', $this->getKey())
-            ->where('team_id', $team_id)->first()
-        ) ? true : false;
+            ->where('id', $team_id)->first();
     }
 
     /**
