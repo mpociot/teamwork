@@ -3,6 +3,7 @@
 namespace Mpociot\Teamwork;
 
 use Illuminate\Support\ServiceProvider;
+use Mpociot\Teamwork\Middleware\TeamOwner;
 
 class TeamworkServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,7 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app['router']->aliasMiddleware('teamowner', TeamOwner::class);
         $this->mergeConfig();
         $this->registerTeamwork();
         $this->registerCommands();
