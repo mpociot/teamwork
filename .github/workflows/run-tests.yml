@@ -9,12 +9,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [8.0, 7.4, 7.3, 7.2]
-        laravel: [8.*, 7.*, 6.*]
+        php: [8.0]
+        laravel: [9.*]
         dependency-version: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 8.*
-            testbench: 6.*
+          - laravel: 9.*
+            testbench: dev-remove-nice-to-have-deps
           - laravel: 7.*
             testbench: 5.*
           - laravel: 6.*
