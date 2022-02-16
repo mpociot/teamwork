@@ -14,7 +14,7 @@ jobs:
         dependency-version: [prefer-lowest, prefer-stable]
         include:
           - laravel: 9.*
-            testbench: dev-remove-nice-to-have-deps
+            testbench: 7.*
           - laravel: 7.*
             testbench: 5.*
           - laravel: 6.*
