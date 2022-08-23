@@ -22,13 +22,13 @@ trait UserHasTeams
     }
 
     /**
-     * has-one relation with the current selected team model.
+     * Belongs-to relation with the current selected team model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function currentTeam()
     {
-        return $this->hasOne(Config::get('teamwork.team_model'), 'id', 'current_team_id');
+        return $this->belongsTo(Config::get('teamwork.team_model'), 'current_team_id', 'id');
     }
 
     /**
