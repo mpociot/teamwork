@@ -9,7 +9,7 @@ trait TeamworkTeamInviteTrait
     /**
      * Has-One relations with the team model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function team()
     {
@@ -19,7 +19,7 @@ trait TeamworkTeamInviteTrait
     /**
      * Has-One relations with the user model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
     {
@@ -29,7 +29,7 @@ trait TeamworkTeamInviteTrait
     /**
      * Has-One relations with the user model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function inviter()
     {
