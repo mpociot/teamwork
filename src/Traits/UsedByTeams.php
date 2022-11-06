@@ -17,24 +17,28 @@ trait UsedByTeams
      */
     protected static function bootUsedByTeams()
     {
-        static::addGlobalScope('team', function (Builder $builder) {
-            static::teamGuard();
-
-            $builder->where($builder->getQuery()->from.'.team_id', auth()->user()->currentTeam->getKey());
-        });
-
-        static::saving(function (Model $model) {
-            if (! isset($model->team_id)) {
+        static::addGlobalScope(
+            'team', function (Builder $builder) {
                 static::teamGuard();
 
-                $model->team_id = auth()->user()->currentTeam->getKey();
+                $builder->where($builder->getQuery()->from.'.team_id', auth()->user()->currentTeam->getKey());
             }
-        });
+        );
+
+        static::saving(
+            function (Model $model) {
+                if (! isset($model->team_id)) {
+                    static::teamGuard();
+
+                    $model->team_id = auth()->user()->currentTeam->getKey();
+                }
+            }
+        );
     }
 
     /**
-     * @param Builder $query
-     * @return mixed
+     * @param  Builder $query
+     * @return Builder
      */
     public function scopeAllTeams(Builder $query)
     {
@@ -42,7 +46,7 @@ trait UsedByTeams
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function team()
     {

@@ -22,13 +22,13 @@ trait UserHasTeams
     }
 
     /**
-     * has-one relation with the current selected team model.
+     * Belongs-to relation with the current selected team model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function currentTeam()
     {
-        return $this->hasOne(Config::get('teamwork.team_model'), 'id', 'current_team_id');
+        return $this->belongsTo(Config::get('teamwork.team_model'), 'current_team_id', 'id');
     }
 
     /**
@@ -41,7 +41,9 @@ trait UserHasTeams
 
     /**
      * One-to-Many relation with the invite model.
-     * @return mixed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManygs
+     * 
      */
     public function invites()
     {
@@ -57,13 +59,15 @@ trait UserHasTeams
      */
     public static function bootUserHasTeams()
     {
-        static::deleting(function (Model $user) {
-            if (! method_exists(Config::get('teamwork.user_model'), 'bootSoftDeletes')) {
-                $user->teams()->sync([]);
-            }
+        static::deleting(
+            function (Model $user) {
+                if (! method_exists(Config::get('teamwork.user_model'), 'bootSoftDeletes')) {
+                    $user->teams()->sync([]);
+                }
 
-            return true;
-        });
+                return true;
+            }
+        );
     }
 
     /**
@@ -89,7 +93,7 @@ trait UserHasTeams
     }
 
     /**
-     * @param $team
+     * @param  $team
      * @return mixed
      */
     protected function retrieveTeamId($team)
@@ -107,7 +111,7 @@ trait UserHasTeams
     /**
      * Returns if the user owns the given team.
      *
-     * @param mixed $team
+     * @param  mixed $team
      * @return bool
      */
     public function isOwnerOfTeam($team)
@@ -122,8 +126,8 @@ trait UserHasTeams
     /**
      * Alias to eloquent many-to-many relation's attach() method.
      *
-     * @param mixed $team
-     * @param array $pivotData
+     * @param  mixed $team
+     * @param  array $pivotData
      * @return $this
      */
     public function attachTeam($team, $pivotData = [])
@@ -161,7 +165,7 @@ trait UserHasTeams
     /**
      * Alias to eloquent many-to-many relation's detach() method.
      *
-     * @param mixed $team
+     * @param  mixed $team
      * @return $this
      */
     public function detachTeam($team)
@@ -194,7 +198,7 @@ trait UserHasTeams
     /**
      * Attach multiple teams to a user.
      *
-     * @param mixed $teams
+     * @param  mixed $teams
      * @return $this
      */
     public function attachTeams($teams)
@@ -209,7 +213,7 @@ trait UserHasTeams
     /**
      * Detach multiple teams from a user.
      *
-     * @param mixed $teams
+     * @param  mixed $teams
      * @return $this
      */
     public function detachTeams($teams)
@@ -224,7 +228,7 @@ trait UserHasTeams
     /**
      * Switch the current team of the user.
      *
-     * @param object|array|int $team
+     * @param  object|array|int $team
      * @return $this
      * @throws ModelNotFoundException
      * @throws UserNotInTeamException

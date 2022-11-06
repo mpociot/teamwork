@@ -4,6 +4,7 @@ namespace Mpociot\Teamwork\Tests\Feature;
 
 use Exception;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 use Mockery as m;
 use Mpociot\Teamwork\TeamInvite;
 use Mpociot\Teamwork\TeamworkTeam;
@@ -261,7 +262,7 @@ class TeamworkTest extends TestCase
 
     public function testInviteToTeamFiresEvent()
     {
-        $this->expectsEvents(\Mpociot\Teamwork\Events\UserInvitedToTeam::class);
+        Event::fake();
 
         auth()->login($this->user);
 
@@ -271,5 +272,7 @@ class TeamworkTest extends TestCase
 
         \Teamwork::inviteToTeam($email, $team, function ($invite) {
         });
+
+        Event::assertDispatched(\Mpociot\Teamwork\Events\UserInvitedToTeam::class);
     }
 }
