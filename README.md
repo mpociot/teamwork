@@ -15,7 +15,7 @@ Teamwork is the fastest and easiest method to add a User / Team association with
 
     composer require mpociot/teamwork
 
-The `Teamwork` Facade will be discovered by Laravel automatically .
+The `Teamwork` Facade will be discovered by Laravel automatically.
 
 ## Configuration
 
