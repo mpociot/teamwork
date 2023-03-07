@@ -263,14 +263,22 @@ trait UserHasTeams
      * Create team for owner, add owner to the users and switch to the team.
      *
      * @param array $data
+     * @param bool $forceSwitchTeam
      * @return mixed
      */
-    public function createOwnedTeam($data)
+    public function createOwnedTeam($data, $forceSwitchTeam = false)
     {
         $teamModel = Config::get('teamwork.team_model');
         $team = $teamModel::create(array_merge($data, ['owner_id' => $this->id]));
 
         $this->attachTeam($team);
+
+        if (
+            $this->current_team_id !== $team->id &&
+            $forceSwitchTeam
+        ) {
+            $this->switchTeam($team);
+        }
 
         return $team;
     }

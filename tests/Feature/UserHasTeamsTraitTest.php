@@ -316,12 +316,28 @@ class UserHasTeamsTraitTest extends TestCase
         $this->user->switchTeam(3);
     }
 
-    public function testTeamForOwnerCanBeCreated()
+    public function testTeamForOwnerCanBeCreatedAndSwitchToTeamIfNoTeamExists()
     {
         $team = $this->user->createOwnedTeam(['name' => 'test']);
 
         $this->assertTrue($this->user->isOwnerOfTeam($team));
         $this->assertTrue($team->hasUser($this->user));
         $this->assertEquals($this->user->currentTeam->id, $team->id);
+    }
+
+    public function testTeamForOwnerCanBeCreatedAndNotSwitchToTeamIfTeamExists()
+    {
+        $firstTeam = $this->user->createOwnedTeam(['name' => 'test']);
+        $anotherTeam = $this->user->createOwnedTeam(['name' => 'Another test']);
+
+        $this->assertEquals($this->user->currentTeam->id, $firstTeam->id);
+    }
+
+    public function testTeamForOwnerCanBeCreatedAndCanSwitchToNewTeam()
+    {
+        $firstTeam = $this->user->createOwnedTeam(['name' => 'test']);
+        $anotherTeam = $this->user->createOwnedTeam(['name' => 'Another test'], true);
+
+        $this->assertEquals($this->user->currentTeam->id, $anotherTeam->id);
     }
 }
