@@ -258,4 +258,20 @@ trait UserHasTeams
 
         return $this;
     }
+
+    /**
+     * Create team for owner, add owner to the users and switch to the team.
+     *
+     * @param array $data
+     * @return mixed
+     */
+    public function createOwnedTeam($data)
+    {
+        $teamModel = Config::get('teamwork.team_model');
+        $team = $teamModel::create(array_merge($data, ['owner_id' => $this->id]));
+
+        $this->attachTeam($team);
+
+        return $team;
+    }
 }

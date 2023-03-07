@@ -315,4 +315,13 @@ class UserHasTeamsTraitTest extends TestCase
         $this->expectException('Illuminate\Database\Eloquent\ModelNotFoundException');
         $this->user->switchTeam(3);
     }
+
+    public function testTeamForOwnerCanBeCreated()
+    {
+        $team = $this->user->createOwnedTeam(['name' => 'test']);
+
+        $this->assertTrue($this->user->isOwnerOfTeam($team));
+        $this->assertTrue($team->hasUser($this->user));
+        $this->assertEquals($this->user->currentTeam->id, $team->id);
+    }
 }
