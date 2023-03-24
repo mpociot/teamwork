@@ -23,6 +23,20 @@
 
 - Added Laravel 5.2 support.
 
+## 8.1.0 - 2023-03-24
+
+### What's Changed
+
+- Remove redundant word by @ubpon in https://github.com/mpociot/teamwork/pull/154
+- Added function createOwnedTeam to UserHasTeams by @khatriafaz in https://github.com/mpociot/teamwork/pull/155
+
+### New Contributors
+
+- @ubpon made their first contribution in https://github.com/mpociot/teamwork/pull/154
+- @khatriafaz made their first contribution in https://github.com/mpociot/teamwork/pull/155
+
+**Full Changelog**: https://github.com/mpociot/teamwork/compare/8.0.0...8.1.0
+
 ## Added Laravel 10 Support and drop obsolete version - 2023-02-15
 
 ### Removed
