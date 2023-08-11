@@ -15,7 +15,7 @@ Teamwork is the fastest and easiest method to add a User / Team association with
 
     composer require mpociot/teamwork
 
-The `Teamwork` Facade will be auto discovered by Laravel automatically.
+The `Teamwork` Facade will be discovered by Laravel automatically.
 
 ## Configuration
 
@@ -171,6 +171,18 @@ $user->teams()->attach($team->id); // id only
 ```
 
 By using the `attachTeam` method, if the User has no Teams assigned, the `current_team_id` column will automatically be set.
+
+Alternatively, you can also use `createOwnedTeam` method from `UserHasTeams` trait. It will create team for the user as owner, attach the user to the team and switch to the newly created team.
+
+```php
+// Create user owned team and switch the current team to this new team.
+$team = $user->createOwnedTeam(['name' => 'My awesome team']);
+
+// If user has another current team active, you should pass second parameter as true to force switch to the new team.
+$team = $user->createOwnedTeam(['name' => 'My awesome team'], true);
+```
+
+The function will return the newly created instance of your team model.
 
 ### Get to know my team(s)
 
