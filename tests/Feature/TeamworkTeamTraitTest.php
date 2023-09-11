@@ -141,6 +141,11 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
     {
         return 'users';
     }
+
+    public function getKey()
+    {
+        return 'id';
+    }
 }
 
 class TestUserTeamTraitStub extends \Illuminate\Database\Eloquent\Model
