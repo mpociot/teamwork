@@ -91,7 +91,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with($this->user->getTable() . '.' . $this->user->getKeyName(), '=', $this->user->getKey())
+            ->with('users.user_id, '=', $this->user->getKey())
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -120,7 +120,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with($this->user->getTable() . '.' . $this->user->getKeyName(), '=', $this->user->getKey())
+            ->with('users.user_id, '=', $this->user->getKey())
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -146,9 +146,4 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
 class TestUserTeamTraitStub extends \Illuminate\Database\Eloquent\Model
 {
     use TeamworkTeamTrait;
-
-    public function getTable()
-    {
-        return 'teams_users';
-    }
 }
