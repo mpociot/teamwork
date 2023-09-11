@@ -144,7 +144,7 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
 
     public function getKey()
     {
-        return 'id';
+        return 'key';
     }
 }
 
