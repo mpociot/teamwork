@@ -86,7 +86,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with('user_id', '=', 'key')
+            ->with('users.user_id', '=', 'key')
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
