@@ -146,4 +146,9 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
 class TestUserTeamTraitStub extends \Illuminate\Database\Eloquent\Model
 {
     use TeamworkTeamTrait;
+
+    public function getTable()
+    {
+        return 'teams_users';
+    }
 }
