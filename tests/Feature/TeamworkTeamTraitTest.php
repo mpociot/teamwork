@@ -75,10 +75,15 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
     {
         $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[users,first]');
 
-        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey]');
+        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey, getTable]');
+
         $user->shouldReceive('getKey')
             ->once()
             ->andReturn('key');
+
+        $user->shouldReceive('getTable')
+            ->once()
+            ->andReturn('users');
 
         $stub->shouldReceive('first')
             ->once()
@@ -86,7 +91,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with('users.user_id', '=', 'key')
+            ->with('$this->user->getTable() . '.' . $this->user->getKeyName(), '=', $this->user->getKey())
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -99,10 +104,15 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
     {
         $stub = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUserTeamTraitStub[users,first]');
 
-        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey]');
+        $user = m::mock('\Mpociot\Teamwork\Tests\Feature\TestUser[getKey, getTable]');
+
         $user->shouldReceive('getKey')
             ->once()
             ->andReturn('key');
+
+        $user->shouldReceive('getTable')
+            ->once()
+            ->andReturn('users');
 
         $stub->shouldReceive('first')
             ->once()
@@ -110,7 +120,7 @@ class TeamworkTeamTraitTest extends \PHPUnit\Framework\TestCase
 
         $stub->shouldReceive('where')
             ->once()
-            ->with('users.user_id', '=', 'key')
+            ->with('$this->user->getTable() . '.' . $this->user->getKeyName(), '=', $this->user->getKey())
             ->andReturnSelf();
 
         $stub->shouldReceive('users')
@@ -125,6 +135,11 @@ class TestUser extends \Illuminate\Database\Eloquent\Model
     public function getKeyName()
     {
         return 'user_id';
+    }
+
+    public function getTable()
+    {
+        return 'users';
     }
 }
 
