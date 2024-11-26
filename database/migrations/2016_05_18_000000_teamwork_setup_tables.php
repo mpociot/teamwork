@@ -17,7 +17,7 @@ class TeamworkSetupTables extends Migration
         });
 
         Schema::create(\Config::get('teamwork.teams_table'), function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned();
+            $table->id();
             $table->bigInteger('owner_id')->unsigned()->nullable();
             $table->string('name');
             $table->timestamps();
@@ -41,7 +41,7 @@ class TeamworkSetupTables extends Migration
         });
 
         Schema::create(\Config::get('teamwork.team_invites_table'), function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('team_id')->unsigned();
             $table->enum('type', ['invite', 'request']);
