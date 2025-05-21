@@ -23,6 +23,14 @@
 
 - Added Laravel 5.2 support.
 
+## 10.0.0 - 2025-05-21
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/mpociot/teamwork/pull/161
+
+**Full Changelog**: https://github.com/mpociot/teamwork/compare/9.0.0...10.0.0
+
 ## 8.1.0 - 2023-03-24
 
 ### What's Changed
