@@ -25,13 +25,13 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^9.0|^10.0|^11.0"
+        "laravel/framework": "^9.0|^10.0|^11.0|^12.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.5.1",
-        "illuminate/database": "^9.0|^10.0|^11.0",
-        "orchestra/testbench": "^7.0|^8.0|^9.0",
-        "doctrine/dbal": "^2.10|^3.5"
+        "illuminate/database": "^9.0|^10.0|^11.0|^12.0",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+        "doctrine/dbal": "^2.10|^3.5|^4.2"
     },
     "config": {
         "optimize-autoloader": true,
