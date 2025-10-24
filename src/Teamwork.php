@@ -40,7 +40,7 @@ class Teamwork
      * If no team is given, the current_team_id will be used instead.
      *
      * @param string|User $user
-     * @param null|Team $team
+     * @param null|TeamworkTeam $team
      * @param callable $success
      * @return TeamInvite
      * @throws \Exception
@@ -84,7 +84,7 @@ class Teamwork
      * Checks if the given email address has a pending invite for the
      * provided Team.
      * @param $email
-     * @param Team|array|int $team
+     * @param TeamworkTeam|array|int $team
      * @return bool
      */
     public function hasPendingInvite($email, $team)
