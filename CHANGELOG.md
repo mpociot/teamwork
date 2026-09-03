@@ -23,6 +23,14 @@
 
 - Added Laravel 5.2 support.
 
+## 11.0.0 - 2026-09-03
+
+### What's Changed
+
+* Add Laravel 13 support by @sschlein in https://github.com/mpociot/teamwork/pull/167
+
+**Full Changelog**: https://github.com/mpociot/teamwork/compare/10.0.0...11.0.0
+
 ## 10.0.0 - 2025-05-21
 
 ### What's Changed
