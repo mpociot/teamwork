@@ -61,6 +61,7 @@ class TeamworkServiceProvider extends ServiceProvider
      */
     protected function registerTeamwork()
     {
+        $this->app->singleton(Teamwork::class);
         $this->app->alias(Teamwork::class, 'teamwork');
     }
 

@@ -2,8 +2,8 @@
 
 namespace Mpociot\Teamwork;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Foundation\Application;
 use Mpociot\Teamwork\Events\UserInvitedToTeam;
 
 class Teamwork
@@ -11,14 +11,14 @@ class Teamwork
     /**
      * Laravel application.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     public $app;
 
     /**
      * Create a new Teamwork instance.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct(Application $app)
     {
@@ -30,7 +30,7 @@ class Teamwork
      */
     public function user()
     {
-        return $this->app->auth->user();
+        return $this->app->make('auth')->user();
     }
 
     /**
