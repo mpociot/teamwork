@@ -3,10 +3,12 @@
 namespace Mpociot\Teamwork\Tests\Feature;
 
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;
 use Mpociot\Teamwork\TeamInvite;
+use Mpociot\Teamwork\Teamwork;
 use Mpociot\Teamwork\TeamworkTeam;
 use Mpociot\Teamwork\Tests\Support\User;
 use Mpociot\Teamwork\Tests\TestCase;
@@ -84,6 +86,26 @@ class TeamworkTest extends TestCase
         $this->assertNull(\Teamwork::user());
         auth()->login($this->user);
         $this->assertEquals($this->user, \Teamwork::user());
+    }
+
+    public function testUsesApplicationContractToResolveAuth()
+    {
+        $auth = m::mock();
+        $auth->shouldReceive('user')->once()->andReturn($this->user);
+
+        $app = m::mock(Application::class);
+        $app->shouldReceive('make')->once()->with('auth')->andReturn($auth);
+
+        $this->assertSame($this->user, (new Teamwork($app))->user());
+    }
+
+    public function testTeamworkClassAndAliasResolveTheSameSingleton()
+    {
+        $teamwork = $this->app->make(Teamwork::class);
+
+        $this->assertSame($teamwork, $this->app->make(Teamwork::class));
+        $this->assertSame($teamwork, $this->app->make('teamwork'));
+        $this->assertSame($teamwork, \Teamwork::getFacadeRoot());
     }
 
     public function testGetInviteFromTokens()
